@@ -122,27 +122,117 @@
     }
   }
 
-  function checkEndpointStatus(endpoint) {
-    if (!endpoint) {
-      const isHttps = window.location.protocol === 'https:';
+  async function sha256Hex32(message) {
+    if (window.crypto && window.crypto.subtle) {
+      const msgBuffer = new TextEncoder().encode(message);
+      const hashBuffer = await window.crypto.subtle.digest('SHA-256', msgBuffer);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('').slice(0, 32);
+    }
+    let h1 = 0xdeadbeef, h2 = 0x41c64e6d;
+    for (let i = 0; i < message.length; i++) {
+      const ch = message.charCodeAt(i);
+      h1 = Math.imul(h1 ^ ch, 2654435761);
+      h2 = Math.imul(h2 ^ ch, 1597334677);
+    }
+    h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+    h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+    const hex = (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(16).padStart(16, '0');
+    return (hex + hex).slice(0, 32);
+  }
+
+  async function submitRegistration(payload) {
+    // 1. Anti-spam Honeypot check
+    if (payload.website && payload.website.trim()) {
+      console.info('[CloudPort] Honeypot triggered, simulating success');
+      return { ok: true, id: 'RECEIPT-' + Date.now().toString(36).toUpperCase() };
+    }
+
+    const endpoint = getActiveEndpoint();
+
+    // Pathway A: Explicit Backend API Endpoint (Localhost Python server or custom Cloud Function)
+    if (endpoint) {
+      if (window.location.protocol === 'https:' && endpoint.startsWith('http://') && !endpoint.includes('127.0.0.1') && !endpoint.includes('localhost')) {
+        return {
+          ok: false,
+          status: 0,
+          error: `Insecure HTTP endpoint (${endpoint}) blocked under browser Mixed Content rules.`
+        };
+      }
+
+      const targetUrl = `${endpoint.replace(/\/+$/, '')}/register_user`;
+      console.info('[CloudPort] Submitting via Backend API:', targetUrl);
+
+      const response = await fetch(targetUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await response.json().catch(() => ({}));
+      if (response.ok && data.ok) {
+        return { ok: true, id: data.id || 'CONFIRMED' };
+      }
       return {
         ok: false,
-        title: 'Backend Service Not Linked',
-        message: isHttps
-          ? 'No cloud backend API is linked to this deployed website yet. For local evaluation with the Python backend, open http://127.0.0.1:3000.'
-          : 'No backend API endpoint is configured. Ensure the backend server is running on http://127.0.0.1:8080.'
+        status: response.status,
+        error: data.error,
+        code: data.code
       };
     }
 
-    if (window.location.protocol === 'https:' && endpoint.startsWith('http://')) {
-      return {
-        ok: false,
-        title: 'Insecure Endpoint Blocked',
-        message: `This live site is on HTTPS, which prevents connecting to an unencrypted HTTP endpoint (${endpoint}) under browser Mixed Content rules. A deployed HTTPS Cloud Function URL is required.`
-      };
+    // Pathway B: Direct Google Cloud Firestore Native REST API (Zero-Billing Cloud Deployment)
+    const projectId = (window.CLOUDPORT_CONFIG && window.CLOUDPORT_CONFIG.PROJECT_ID) || 'cloud-study-jams-3f931';
+    const emailNorm = payload.email.trim().toLowerCase();
+    const docHashInput = payload.registrationType === 'mentor' ? `mentor:${emailNorm}` : emailNorm;
+    const docId = await sha256Hex32(docHashInput);
+
+    const firestoreUrl = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/registrations?documentId=${docId}`;
+    console.info('[CloudPort] Submitting directly to Google Cloud Firestore Native:', firestoreUrl);
+
+    // Map payload into Firestore Native document fields
+    const fields = {
+      name: { stringValue: payload.name },
+      email: { stringValue: emailNorm },
+      registrationType: { stringValue: payload.registrationType },
+      source: { stringValue: 'web_cloudport' },
+      createdAt: { timestampValue: new Date().toISOString() }
+    };
+
+    if (payload.registrationType === 'student') {
+      fields.department = { stringValue: payload.department };
+      fields.yearOfStudy = { stringValue: payload.yearOfStudy };
+      fields.interest = { stringValue: payload.interest };
+    } else {
+      fields.currentRole = { stringValue: payload.currentRole };
+      fields.skills = { stringValue: payload.skills };
+      fields.mentorAreas = { stringValue: payload.mentorAreas };
+      fields.motivation = { stringValue: payload.motivation };
     }
 
-    return { ok: true };
+    const response = await fetch(firestoreUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ fields })
+    });
+
+    if (response.ok) {
+      return { ok: true, id: docId };
+    }
+
+    const errData = await response.json().catch(() => ({}));
+    if (response.status === 409 || (errData.error && errData.error.status === 'ALREADY_EXISTS')) {
+      const duplicateMsg = payload.registrationType === 'mentor'
+        ? 'This email address has already submitted a mentor application.'
+        : 'This email address is already registered for Study Jams 2026.';
+      return { ok: false, status: 409, error: duplicateMsg, code: 'DUPLICATE_EMAIL' };
+    }
+
+    return {
+      ok: false,
+      status: response.status,
+      error: (errData.error && errData.error.message) || 'Failed to save registration record into Firestore.'
+    };
   }
 
   // -------------------------------------------------------------------------
@@ -357,25 +447,15 @@
       studentSpinner.style.display = 'inline-block';
       studentBtnText.textContent = 'Registering...';
 
-      const targetUrl = `${endpoint.replace(/\/+$/, '')}/register_user`;
-
       try {
-        const response = await fetch(targetUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(payload)
-        });
+        const result = await submitRegistration(payload);
 
-        const data = await response.json().catch(() => ({}));
-
-        if (response.ok && data.ok) {
+        if (result.ok) {
           // Success Display
           confirmedStudentName.textContent = payload.name;
           confirmedStudentEmail.textContent = payload.email;
           confirmedStudentInterest.textContent = payload.interest;
-          confirmedStudentId.textContent = data.id || 'CONFIRMED';
+          confirmedStudentId.textContent = result.id || 'CONFIRMED';
 
           studentSuccessModal.style.display = 'flex';
           studentForm.reset();
@@ -384,35 +464,27 @@
           [studentNameInput, studentEmailInput, studentDeptSelect, studentYearSelect, studentInterestSelect].forEach(el => {
             el.classList.remove('is-valid');
           });
-        } else if (response.status === 409) {
+        } else if (result.status === 409 || result.code === 'DUPLICATE_EMAIL') {
           studentErrorTitle.textContent = 'Already Registered';
-          studentErrorMessage.textContent = data.error || 'This email address is already registered for Study Jams 2026.';
+          studentErrorMessage.textContent = result.error || 'This email address is already registered for Study Jams 2026.';
           studentFormError.style.display = 'flex';
-        } else if (response.status === 400) {
+        } else if (result.status === 400) {
           studentErrorTitle.textContent = 'Validation Error';
-          studentErrorMessage.textContent = data.error || 'Please ensure all submitted details are formatted correctly.';
+          studentErrorMessage.textContent = result.error || 'Please ensure all submitted details are formatted correctly.';
           studentFormError.style.display = 'flex';
-        } else if (response.status === 403) {
-          studentErrorTitle.textContent = 'Access Denied (CORS)';
-          studentErrorMessage.textContent = data.error || 'The backend rejected the request from this origin (' + window.location.origin + ').';
-          studentFormError.style.display = 'flex';
-        } else if (response.status === 404) {
-          studentErrorTitle.textContent = 'Endpoint Not Found (404)';
-          studentErrorMessage.textContent = 'The registration path (/register_user) was not found on the backend service.';
-          studentFormError.style.display = 'flex';
-        } else if (response.status === 429) {
-          studentErrorTitle.textContent = 'Too Many Requests (429)';
-          studentErrorMessage.textContent = 'Rate limit exceeded. Please wait a moment before trying again.';
+        } else if (result.status === 403) {
+          studentErrorTitle.textContent = 'Access Denied';
+          studentErrorMessage.textContent = result.error || 'The request was rejected by security policies.';
           studentFormError.style.display = 'flex';
         } else {
-          studentErrorTitle.textContent = 'Backend Error (HTTP ' + response.status + ')';
-          studentErrorMessage.textContent = data.error || 'The backend service encountered an error processing your registration.';
+          studentErrorTitle.textContent = 'Submission Failed';
+          studentErrorMessage.textContent = result.error || 'An error occurred processing your registration.';
           studentFormError.style.display = 'flex';
         }
       } catch (err) {
-        console.error('[CloudPort] Registration network failure:', err, { targetUrl, origin: window.location.origin });
-        studentErrorTitle.textContent = 'Backend Connection Failed';
-        studentErrorMessage.textContent = `Could not reach the registration service at "${endpoint}". Please verify that the backend server is running and accessible.`;
+        console.error('[CloudPort] Student registration failure:', err, { origin: window.location.origin });
+        studentErrorTitle.textContent = 'Connection Error';
+        studentErrorMessage.textContent = 'Could not reach the registration service. Please verify your internet connection.';
         studentFormError.style.display = 'flex';
       } finally {
         studentSubmitBtn.disabled = false;
@@ -437,16 +509,6 @@
         return;
       }
 
-      const endpoint = getActiveEndpoint();
-      const statusCheck = checkEndpointStatus(endpoint);
-      if (!statusCheck.ok) {
-        console.warn('[CloudPort] Endpoint check failed:', statusCheck.message, { endpoint, origin: window.location.origin });
-        mentorErrorTitle.textContent = statusCheck.title;
-        mentorErrorMessage.textContent = statusCheck.message;
-        mentorFormError.style.display = 'flex';
-        return;
-      }
-
       // Payload matching backend mentor schema
       const payload = {
         registrationType: 'mentor',
@@ -464,24 +526,14 @@
       mentorSpinner.style.display = 'inline-block';
       mentorBtnText.textContent = 'Submitting Application...';
 
-      const targetUrl = `${endpoint.replace(/\/+$/, '')}/register_user`;
-
       try {
-        const response = await fetch(targetUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(payload)
-        });
+        const result = await submitRegistration(payload);
 
-        const data = await response.json().catch(() => ({}));
-
-        if (response.ok && data.ok) {
+        if (result.ok) {
           // Success Display
           confirmedMentorName.textContent = payload.name;
           confirmedMentorEmail.textContent = payload.email;
-          confirmedMentorId.textContent = data.id || 'MENTOR-APPLICATION';
+          confirmedMentorId.textContent = result.id || 'CONFIRMED';
 
           mentorSuccessModal.style.display = 'flex';
           mentorForm.reset();
@@ -490,35 +542,27 @@
           [mentorNameInput, mentorEmailInput, mentorRoleInput, mentorSkillsInput, mentorAreasInput, mentorMotivationInput].forEach(el => {
             el.classList.remove('is-valid');
           });
-        } else if (response.status === 409) {
+        } else if (result.status === 409 || result.code === 'DUPLICATE_EMAIL') {
           mentorErrorTitle.textContent = 'Already Submitted';
-          mentorErrorMessage.textContent = data.error || 'This email address has already submitted a mentor application.';
+          mentorErrorMessage.textContent = result.error || 'This email address has already submitted a mentor application.';
           mentorFormError.style.display = 'flex';
-        } else if (response.status === 400) {
+        } else if (result.status === 400) {
           mentorErrorTitle.textContent = 'Validation Error';
-          mentorErrorMessage.textContent = data.error || 'Please ensure all submitted details are formatted correctly.';
+          mentorErrorMessage.textContent = result.error || 'Please ensure all submitted details are formatted correctly.';
           mentorFormError.style.display = 'flex';
-        } else if (response.status === 403) {
-          mentorErrorTitle.textContent = 'Access Denied (CORS)';
-          mentorErrorMessage.textContent = data.error || 'The backend rejected the request from this origin (' + window.location.origin + ').';
-          mentorFormError.style.display = 'flex';
-        } else if (response.status === 404) {
-          mentorErrorTitle.textContent = 'Endpoint Not Found (404)';
-          mentorErrorMessage.textContent = 'The registration path (/register_user) was not found on the backend service.';
-          mentorFormError.style.display = 'flex';
-        } else if (response.status === 429) {
-          mentorErrorTitle.textContent = 'Too Many Requests (429)';
-          mentorErrorMessage.textContent = 'Rate limit exceeded. Please wait a moment before trying again.';
+        } else if (result.status === 403) {
+          mentorErrorTitle.textContent = 'Access Denied';
+          mentorErrorMessage.textContent = result.error || 'The request was rejected by security policies.';
           mentorFormError.style.display = 'flex';
         } else {
-          mentorErrorTitle.textContent = 'Backend Error (HTTP ' + response.status + ')';
-          mentorErrorMessage.textContent = data.error || 'The backend service encountered an error processing your application.';
+          mentorErrorTitle.textContent = 'Submission Failed';
+          mentorErrorMessage.textContent = result.error || 'An error occurred processing your application.';
           mentorFormError.style.display = 'flex';
         }
       } catch (err) {
-        console.error('[CloudPort] Mentor application network failure:', err, { targetUrl, origin: window.location.origin });
-        mentorErrorTitle.textContent = 'Backend Connection Failed';
-        mentorErrorMessage.textContent = `Could not reach the mentor application service at "${endpoint}". Please verify that the backend server is running and accessible.`;
+        console.error('[CloudPort] Mentor application failure:', err, { origin: window.location.origin });
+        mentorErrorTitle.textContent = 'Connection Error';
+        mentorErrorMessage.textContent = 'Could not reach the application service. Please verify your internet connection.';
         mentorFormError.style.display = 'flex';
       } finally {
         mentorSubmitBtn.disabled = false;
