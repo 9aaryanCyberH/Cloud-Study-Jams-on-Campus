@@ -56,98 +56,55 @@ The platform pairs a responsive, Google-branded HTML5/CSS3/JavaScript event land
 
 ## 2. Features & Technology Stack
 
-| Layer | Technology | Key Capabilities |
-|---|---|---|
-| **Frontend** | HTML5, Vanilla CSS3, JavaScript (ES6+) | Google developer aesthetic light theme, 2-column hero with original inline SVG learning hub graphic, accessible form controls, real-time field validation, loading spinner states, digital pass modal, and zero endpoint leakage. |
-| **Static Hosting** | Google Cloud Storage (GCS) | Public website bucket hosting with `main_page_suffix=index.html` and 99.99% edge availability. |
-| **Backend Compute** | Google Cloud Functions (2nd Gen) | Python 3.11/3.12 runtime backed by Cloud Run, handling CORS preflight, schema validation, honeypot anti-spam trapping, and structured Cloud Logging. |
-| **Database** | Google Cloud Firestore (Native Mode) | Globally replicated NoSQL document database (`registrations` collection), server-side UTC timestamps (`firestore.SERVER_TIMESTAMP`), and ACID transaction guarantees. |
-| **Decoupled Pipeline** | Cloud Pub/Sub & Secret Manager | Asynchronous event streaming to worker functions (SendGrid email confirmation) without blocking user HTTP response cycles. |
-| **Infrastructure as Code** | Terraform & gcloud CLI | Full reproducibility with automated resource provisioning, IAM bindings, and configuration injection. |
+![Google Cloud Study Jams: Technology Stack & Core Capabilities](docs/screenshots/tech_stack_features.png)
+
+- **Frontend & Client UX:** Semantic HTML5, Vanilla CSS3, and modern ES6+ JavaScript. Styled with Google developer theme and official brand fonts (`Product Sans`, `Google Sans`, `Roboto`). Features real-time field validation, honeypot bot trap, loading spinner feedback, and interactive digital pass modal.
+- **Edge Hosting & CDN:** Deployed on **Firebase Hosting** and **Google Cloud Storage (GCS)** with global edge caching (`main_page_suffix=index.html`), sub-100ms response latency, and 99.99% availability SLA.
+- **Serverless Backend:** **Google Cloud Functions (2nd Gen)** running Python 3.12 on Cloud Run. Enforces strict CORS origin whitelisting, RFC 5322 regex verification, zero committed secrets, and deterministic SHA-256 email hashing.
+- **Database & Decoupled Ops:** **Google Cloud Firestore (Native Mode, `nam5`)** with ACID transaction guarantees, server-side UTC timestamps (`firestore.SERVER_TIMESTAMP`), duplicate write rejection (HTTP 409), and asynchronous **Cloud Pub/Sub** message decoupling.
 
 ---
 
 ## 3. System Architecture Diagram
 
-```mermaid
-flowchart LR
-    subgraph Client ["1. Client Layer"]
-        User(["Student / Mentor"]) -->|"Interacts with"| App["Web App (HTML5/CSS3/JS)<br/>&bull; Live Validation & Honeypot<br/>&bull; Google Brand Colors & Fonts"]
-    end
+![Google Cloud Platform: Serverless Application Architecture](docs/screenshots/system_architecture.png)
 
-    subgraph Hosting ["2. Google Edge Delivery"]
-        Host["Firebase Hosting / GCS<br/>cloud-study-jams-3f931.web.app<br/>(Sub-100ms Edge CDN)"]
-    end
-
-    subgraph Compute ["3. Serverless Compute"]
-        CF["Cloud Function (2nd Gen)<br/>cloudport-register &bull; Python 3.12<br/>(CORS Handshake & Auth)"]
-    end
-
-    subgraph Database ["4. NoSQL Storage"]
-        DB[("Cloud Firestore Native<br/>Database: (default) &bull; nam5<br/>Collection: registrations")]
-    end
-
-    subgraph Async ["5. Decoupled Pipeline"]
-        PS["Cloud Pub/Sub<br/>Topic: registration-created"]
-    end
-
-    Host -.->|"Serves Bundle"| App
-    App ==>>|"HTTPS POST Payload"| CF
-    App -.->|"Direct Native REST"| DB
-    CF ==>>|"Deterministic SHA-256 Write"| DB
-    CF -.->|"Async Publish"| PS
-
-    classDef gBlue fill:#e8f0fe,stroke:#1a73e8,stroke-width:1.5px,color:#1967d2;
-    classDef gRed fill:#fce8e6,stroke:#ea4335,stroke-width:1.5px,color:#c5221f;
-    classDef gYellow fill:#fef7e0,stroke:#fbbc04,stroke-width:1.5px,color:#b06000;
-    classDef gGreen fill:#e6f4ea,stroke:#34a853,stroke-width:1.5px,color:#137333;
-
-    class Host,App gBlue;
-    class CF gRed;
-    class DB gYellow;
-    class User,PS gGreen;
-```
+### Dataflow Execution Pipeline:
+1. **Client Interaction:** Student or Mentor fills out the registration form; JavaScript validates inputs locally and checks for honeypot bot activity.
+2. **Edge Asset Delivery:** Firebase Hosting & Cloud Storage serve cached static assets from Google's global multi-region edge network.
+3. **Serverless Compute & Security:** HTTPS POST is routed to Cloud Function (2nd Gen) which performs CORS preflight validation, server-side schema verification, and computes a SHA-256 hash of the normalized email.
+4. **NoSQL Persistence:** The record is atomically committed to Cloud Firestore Native Mode (`registrations` collection) using the deterministic hash as the document ID to prevent duplicate entries.
+5. **Decoupled Event Streaming:** A Cloud Pub/Sub event (`registration-created`) is emitted asynchronously for downstream notifications without delaying the user HTTP response.
 
 <details>
-<summary><b>Click to expand Request-Response Lifecycle Sequence Diagram</b></summary>
+<summary><b>Click to expand Request-Response Lifecycle Sequence Protocol</b></summary>
 
 ```mermaid
 sequenceDiagram
     autonumber
     actor Attendee as Participant / Mentor
     participant Web as Google Hosting (Edge CDN)
-    participant API as Cloud Functions / Firestore REST
+    participant API as Cloud Functions (Python 3.12)
     participant DB as Cloud Firestore (Native Mode)
     participant PS as Cloud Pub/Sub (Async Worker)
 
-    Note over Attendee,Web: 1. Asset Delivery
     Attendee->>Web: GET / (index.html, style.css, script.js)
     Web-->>Attendee: 200 OK (Gzipped Static Bundle Cached)
 
-    Note over Attendee,API: 2. Submission & Validation
     Attendee->>API: POST /register_user (JSON Payload)
-    
-    rect rgb(235, 243, 255)
-        Note over API: Server Security Handshake
-        API->>API: Check CORS & Verify Allowed Origin
-        API->>API: Anti-Spam Check: website == ""
-        API->>API: Validate RFC 5322 Email & Field Boundaries
-        API->>API: Compute SHA-256 Hash of Normalized Email
-    end
+    API->>API: Verify CORS Origin & Anti-Spam Honeypot
+    API->>API: Validate RFC 5322 Email & Field Boundaries
+    API->>API: Compute SHA-256 Deterministic Hash
 
-    alt Document Already Exists (Duplicate Attempt)
+    alt Already Registered (Duplicate Submission)
         API->>DB: create(doc_id, payload)
         DB-->>API: Conflict: ALREADY_EXISTS (HTTP 409)
         API-->>Attendee: 409 Conflict {"ok": false, "code": "DUPLICATE_EMAIL"}
-        Note over Attendee: Shows "Already Registered" Error Banner
     else New Registration Record
         API->>DB: create(doc_id, payload + SERVER_TIMESTAMP)
         DB-->>API: Write Acknowledged (HTTP 201)
-        opt Async Notification
-            API-)PS: publish(registration_event)
-        end
+        API-)PS: publish(registration_event)
         API-->>Attendee: 201 Created {"ok": true, "id": doc_id}
-        Note over Attendee: Renders Google Brand Confirmation Banner & Modal Ticket
     end
 ```
 
