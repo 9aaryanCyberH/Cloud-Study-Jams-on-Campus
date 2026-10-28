@@ -67,67 +67,49 @@ The platform pairs a responsive, Google-branded HTML5/CSS3/JavaScript event land
 
 ---
 
-## 3. System Architecture Diagrams
-
-### 3.1 End-to-End Infrastructure Flowchart
+## 3. System Architecture Diagram
 
 ```mermaid
-flowchart TD
-    subgraph ClientLayer ["Client Browser Environment"]
-        StudentUser(["Student Participant"])
-        MentorUser(["Mentor Volunteer"])
-        App["Vanilla JS Client App<br/>(Validation, Fetch API, Modals, 4-Color Badges)"]
-        StudentUser -->|"1a. Registers as Student"| App
-        MentorUser -->|"1b. Registers as Mentor"| App
+flowchart LR
+    subgraph Client ["1. Client Layer"]
+        User(["Student / Mentor"]) -->|"Interacts with"| App["Web App (HTML5/CSS3/JS)<br/>&bull; Live Validation & Honeypot<br/>&bull; Google Brand Colors & Fonts"]
     end
 
-    subgraph HostingLayer ["Static Hosting (Google Edge Delivery)"]
-        LiveHost["Google Firebase Hosting / GCS Bucket<br/>gs://cloudport-site-bucket<br/>https://cloud-study-jams-3f931.web.app"]
-        Assets["index.html (Google Fonts)<br/>style.css (4-Color Stripes)<br/>script.js &bull; config.js"]
-        LiveHost --- Assets
+    subgraph Hosting ["2. Google Edge Delivery"]
+        Host["Firebase Hosting / GCS<br/>cloud-study-jams-3f931.web.app<br/>(Sub-100ms Edge CDN)"]
     end
 
-    subgraph ComputeLayer ["Serverless Compute (Google Cloud Run & Functions)"]
-        CF["Cloud Functions 2nd Gen: cloudport-register<br/>(Python 3.12 Functions Framework)<br/>CORS Whitelist & Honeypot Filter"]
-        SA["Service Account: cloudport-register-sa<br/>roles/datastore.user (Least Privilege)"]
-        App -->|"2. POST /register_user (JSON)"| CF
-        SA -.->|"IAM Execution Identity"| CF
+    subgraph Compute ["3. Serverless Compute"]
+        CF["Cloud Function (2nd Gen)<br/>cloudport-register &bull; Python 3.12<br/>(CORS Handshake & Auth)"]
     end
 
-    subgraph DatabaseLayer ["Managed NoSQL Storage (Google Cloud Firestore)"]
-        DB[("Firestore Native Database: (default)<br/>Project: cloud-study-jams-3f931<br/>Location: nam5")]
-        Col["Collection: registrations"]
-        DocStudent["Doc: {sha256(email)}<br/>type: student, department, year, interest"]
-        DocMentor["Doc: {sha256(mentor:email)}<br/>type: mentor, role, skills, motivation"]
-        CF -->|"3a. Idempotent Create"| DocStudent
-        CF -->|"3b. Idempotent Create"| DocMentor
-        App -.->|"Direct Native REST Failover"| DB
-        DocStudent --- Col
-        DocMentor --- Col
-        Col --- DB
+    subgraph Database ["4. NoSQL Storage"]
+        DB[("Cloud Firestore Native<br/>Database: (default) &bull; nam5<br/>Collection: registrations")]
     end
 
-    subgraph AsyncPipeline ["Decoupled Event Streaming (Bonus)"]
-        PS["Pub/Sub Topic: registration-created"]
-        Worker["Cloud Function: send-confirmation"]
-        SM["Secret Manager: SENDGRID_API_KEY"]
-        CF -.->|"4. Non-Blocking Event Publish"| PS
-        PS -.->|"Eventarc Trigger"| Worker
-        SM -.->|"Fetch Key"| Worker
+    subgraph Async ["5. Decoupled Pipeline"]
+        PS["Cloud Pub/Sub<br/>Topic: registration-created"]
     end
 
-    classDef gBlue fill:#e8f0fe,stroke:#1a73e8,stroke-width:2px,color:#1967d2;
-    classDef gRed fill:#fce8e6,stroke:#ea4335,stroke-width:2px,color:#c5221f;
-    classDef gYellow fill:#fef7e0,stroke:#fbbc04,stroke-width:2px,color:#b06000;
-    classDef gGreen fill:#e6f4ea,stroke:#34a853,stroke-width:2px,color:#137333;
+    Host -.->|"Serves Bundle"| App
+    App ==>>|"HTTPS POST Payload"| CF
+    App -.->|"Direct Native REST"| DB
+    CF ==>>|"Deterministic SHA-256 Write"| DB
+    CF -.->|"Async Publish"| PS
 
-    class App,LiveHost,Assets gBlue;
-    class CF,Worker gRed;
-    class DB,Col,DocStudent,DocMentor gYellow;
-    class SA,PS,SM,StudentUser,MentorUser gGreen;
+    classDef gBlue fill:#e8f0fe,stroke:#1a73e8,stroke-width:1.5px,color:#1967d2;
+    classDef gRed fill:#fce8e6,stroke:#ea4335,stroke-width:1.5px,color:#c5221f;
+    classDef gYellow fill:#fef7e0,stroke:#fbbc04,stroke-width:1.5px,color:#b06000;
+    classDef gGreen fill:#e6f4ea,stroke:#34a853,stroke-width:1.5px,color:#137333;
+
+    class Host,App gBlue;
+    class CF gRed;
+    class DB gYellow;
+    class User,PS gGreen;
 ```
 
-### 3.2 Request-Response Lifecycle Sequence
+<details>
+<summary><b>Click to expand Request-Response Lifecycle Sequence Diagram</b></summary>
 
 ```mermaid
 sequenceDiagram
@@ -168,6 +150,8 @@ sequenceDiagram
         Note over Attendee: Renders Google Brand Confirmation Banner & Modal Ticket
     end
 ```
+
+</details>
 
 ---
 
