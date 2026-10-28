@@ -6,9 +6,10 @@
    ========================================================================== */
 
 :root {
-  /* Typography */
-  --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  /* Google Typography */
+  --font-heading: 'Google Sans', 'Outfit', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-body: 'Roboto', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'Roboto Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
   /* Google Brand Colors */
   --g-blue: #1a73e8;
@@ -16,21 +17,28 @@
   --g-blue-hover: #1557b0;
   --g-blue-tint: #e8f0fe;
   --g-blue-text: #1967d2;
+  --g-blue-border: #c2e7ff;
 
   --g-red: #ea4335;
   --g-red-hover: #d93025;
   --g-red-tint: #fce8e6;
   --g-red-text: #c5221f;
+  --g-red-border: #f9d8d6;
 
   --g-yellow: #fbbc04;
   --g-yellow-dark: #f29900;
   --g-yellow-tint: #fef7e0;
   --g-yellow-text: #b06000;
+  --g-yellow-border: #feefc3;
 
   --g-green: #34a853;
   --g-green-hover: #1e8e3e;
   --g-green-tint: #e6f4ea;
   --g-green-text: #137333;
+  --g-green-border: #ceead6;
+
+  /* Google 4-Color Signature Gradient */
+  --g-stripe-gradient: linear-gradient(90deg, #4285f4 0% 25%, #ea4335 25% 50%, #fbbc04 50% 75%, #34a853 75% 100%);
 
   /* Surfaces & Borders */
   --bg-primary: #ffffff;
@@ -216,7 +224,8 @@ code {
 }
 
 /* Brand Dots Component */
-.brand-dots {
+.brand-dots,
+.badge-dots {
   display: inline-flex;
   gap: 5px;
   align-items: center;
@@ -227,6 +236,11 @@ code {
   height: 8px;
   border-radius: 50%;
   display: inline-block;
+}
+
+.badge-dots-mini .dot {
+  width: 6px;
+  height: 6px;
 }
 
 .dot-blue { background-color: var(--g-blue-light); }
@@ -1226,69 +1240,162 @@ code {
   line-height: 1.45;
 }
 
-/* Alerts */
+/* Alerts (Google Developer Brand Aesthetics) */
 .alert {
+  position: relative;
   display: flex;
+  align-items: flex-start;
   gap: 0.85rem;
-  padding: 1rem 1.15rem;
+  padding: 1.15rem 1.25rem;
   border-radius: var(--radius-md);
   margin-bottom: 1.5rem;
   font-size: 0.9rem;
+  overflow: hidden;
 }
 
-.alert-icon {
-  font-size: 1.2rem;
-  flex-shrink: 0;
-  line-height: 1.2;
-}
-
-.alert-content p {
-  font-size: 0.85rem;
-  margin-top: 0.2rem;
+.alert-stripe-google {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--g-stripe-gradient);
 }
 
 .alert-danger {
   background: var(--g-red-tint);
-  border: 1px solid rgba(234, 67, 53, 0.3);
+  border: 1px solid var(--g-red-border, rgba(234, 67, 53, 0.3));
   color: var(--g-red-text);
+  font-family: var(--font-body);
 }
 
 .alert-danger p {
   color: #a51d24;
+  font-family: var(--font-body);
 }
 
+/* Registration Successful Alert Banner (Google Brand Colors & Fonts) */
 .alert-success {
-  background: var(--g-green-tint, #e6f4ea);
-  border: 1px solid rgba(52, 168, 83, 0.35);
-  color: #137333;
+  background: #ffffff;
+  border: 1px solid var(--g-green-border);
+  box-shadow: 0 4px 16px -2px rgba(52, 168, 83, 0.12), 0 1px 3px rgba(60, 64, 67, 0.08);
+  color: var(--g-green-text);
+  font-family: var(--font-body);
+  padding: 1.25rem 1.25rem 1.15rem 1.15rem;
+  animation: alertSuccessPop 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.alert-success p {
-  color: #0d652d;
+@keyframes alertSuccessPop {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.alert-success-mentor {
+  border-color: var(--g-blue-border);
+  box-shadow: 0 4px 16px -2px rgba(26, 115, 232, 0.12), 0 1px 3px rgba(60, 64, 67, 0.08);
+}
+
+.alert-icon-wrapper {
+  flex-shrink: 0;
+  padding-top: 0.1rem;
+}
+
+.alert-icon-google {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--g-green);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  font-weight: 700;
+  box-shadow: 0 2px 6px rgba(52, 168, 83, 0.35);
+}
+
+.alert-icon-mentor {
+  background: var(--g-blue);
+  box-shadow: 0 2px 6px rgba(26, 115, 232, 0.35);
+}
+
+.alert-badge-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.alert-brand-tag {
+  font-family: var(--font-heading);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--g-green-text);
+}
+
+.alert-brand-tag-blue {
+  color: var(--g-blue-text);
+}
+
+.alert-success-title {
+  font-family: var(--font-heading);
+  font-size: 1.12rem;
+  font-weight: 700;
+  color: #137333;
+  line-height: 1.3;
+  display: block;
+}
+
+.alert-title-blue {
+  color: #1967d2;
+}
+
+.alert-success-body {
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  color: var(--text-body);
+  line-height: 1.5;
+  margin: 0.25rem 0 0.65rem 0;
 }
 
 .inline-success-meta {
-  margin-top: 0.5rem;
-  font-size: 0.85rem;
+  font-family: var(--font-body);
+  font-size: 0.84rem;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 0.5rem;
-  color: #137333;
+  color: var(--text-secondary);
 }
 
-.inline-success-meta code {
-  background: rgba(52, 168, 83, 0.15);
-  padding: 0.15rem 0.4rem;
-  border-radius: 4px;
-  font-family: monospace;
-  font-size: 0.82rem;
-  color: #0d652d;
+.meta-item strong {
+  color: var(--text-primary);
   font-weight: 600;
 }
 
+.google-id-badge {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  background: var(--g-blue-tint);
+  color: var(--g-blue-text);
+  border: 1px solid var(--g-blue-border);
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-xs);
+  display: inline-block;
+}
+
 .inline-success-divider {
-  opacity: 0.6;
+  opacity: 0.45;
+  color: var(--text-muted);
 }
 
 /* FAQ Accordion */
@@ -1346,15 +1453,15 @@ code {
   border-top: 1px solid var(--border-light);
 }
 
-/* Modal Windows */
+/* Modal Windows (Google Developer Aesthetic) */
 .modal-backdrop {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(32, 33, 36, 0.55);
-  backdrop-filter: blur(4px);
+  background: rgba(32, 33, 36, 0.6);
+  backdrop-filter: blur(5px);
   z-index: 1000;
   display: flex;
   align-items: center;
@@ -1369,63 +1476,101 @@ code {
 }
 
 .modal-card {
+  position: relative;
   background: #ffffff;
-  border: 1px solid var(--border-light);
+  border: 1px solid var(--border-medium);
   border-radius: var(--radius-xl);
   max-width: 520px;
   width: 100%;
-  padding: 2.25rem;
-  box-shadow: 0 20px 40px -10px rgba(60, 64, 67, 0.28);
-  animation: slideUp 0.22s ease forwards;
+  padding: 2.25rem 2.25rem 2rem;
+  box-shadow: 0 24px 48px -8px rgba(60, 64, 67, 0.28), 0 8px 16px -4px rgba(60, 64, 67, 0.12);
+  animation: slideUp 0.24s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  overflow: hidden;
+}
+
+.modal-stripe-google {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: var(--g-stripe-gradient);
 }
 
 @keyframes slideUp {
-  from { transform: translateY(16px); opacity: 0; }
+  from { transform: translateY(18px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
 
 .modal-header {
   text-align: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.35rem;
+}
+
+.modal-eyebrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  margin-bottom: 0.35rem;
 }
 
 .success-badge-circle {
-  width: 58px;
-  height: 58px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
-  background: var(--g-green-tint);
-  border: 2px solid var(--g-green);
-  color: var(--g-green);
+  background: linear-gradient(135deg, #34a853 0%, #1e8e3e 100%);
+  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.8rem;
-  margin: 0 auto 1rem;
+  margin: 0 auto 1.15rem;
+  box-shadow: 0 0 0 8px var(--g-green-tint), 0 8px 20px rgba(52, 168, 83, 0.3);
+}
+
+.google-check-icon {
+  stroke: #ffffff;
 }
 
 .badge-circle-mentor {
-  background: var(--g-blue-tint);
-  border-color: var(--g-blue);
-  color: var(--g-blue);
+  background: linear-gradient(135deg, #1a73e8 0%, #1557b0 100%);
+  box-shadow: 0 0 0 8px var(--g-blue-tint), 0 8px 20px rgba(26, 115, 232, 0.3);
 }
 
 .modal-title {
-  font-size: 1.55rem;
-  margin-bottom: 0.25rem;
+  font-family: var(--font-heading);
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+  margin-bottom: 0.3rem;
 }
 
 .modal-sub {
-  font-size: 0.9rem;
+  font-family: var(--font-body);
+  font-size: 0.92rem;
   color: var(--text-secondary);
 }
 
-/* Ticket Card Inside Success Modal */
+/* Ticket Card Inside Success Modal (Google Material Card) */
 .ticket-card {
-  background: var(--bg-secondary);
-  border: 1px dashed var(--border-medium);
+  background: #f8f9fa;
+  border: 1px solid var(--border-medium);
+  border-left: 4px solid var(--g-green);
   border-radius: var(--radius-md);
-  padding: 1.25rem;
+  padding: 1.25rem 1.35rem;
   margin-bottom: 1.25rem;
+  box-shadow: var(--shadow-xs);
+}
+
+.ticket-card-mentor {
+  border-left-color: var(--g-blue);
 }
 
 .ticket-header {
@@ -1435,38 +1580,61 @@ code {
   padding-bottom: 0.75rem;
   border-bottom: 1px solid var(--border-light);
   margin-bottom: 0.85rem;
+}
+
+.ticket-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-heading);
   font-size: 0.78rem;
+  font-weight: 600;
   color: var(--text-secondary);
+  letter-spacing: 0.02em;
 }
 
 .ticket-status {
+  font-family: var(--font-heading);
   font-weight: 700;
   color: var(--g-green-text);
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   background: var(--g-green-tint);
-  padding: 0.15rem 0.5rem;
+  border: 1px solid var(--g-green-border);
+  padding: 0.2rem 0.55rem;
   border-radius: var(--radius-xs);
+  font-size: 0.72rem;
 }
 
 .status-mentor {
   color: var(--g-blue-text);
   background: var(--g-blue-tint);
+  border-color: var(--g-blue-border);
+}
+
+.ticket-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
 }
 
 .ticket-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.6rem;
   font-size: 0.88rem;
 }
 
 .ticket-label {
+  font-family: var(--font-body);
   color: var(--text-secondary);
+  font-size: 0.82rem;
+  font-weight: 500;
 }
 
 .ticket-val {
+  font-family: var(--font-body);
   color: var(--text-primary);
+  font-weight: 600;
   text-align: right;
   word-break: break-all;
 }
@@ -1478,40 +1646,64 @@ code {
 }
 
 .ticket-id {
-  font-size: 0.85rem;
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
   background: var(--g-blue-tint);
   color: var(--g-blue-text);
-  border: 1px solid rgba(26, 115, 232, 0.3);
-  padding: 0.2rem 0.55rem;
+  border: 1px solid var(--g-blue-border);
+  padding: 0.2rem 0.6rem;
   border-radius: var(--radius-xs);
 }
 
 .btn-copy {
+  font-family: var(--font-heading);
   background: #ffffff;
   border: 1px solid var(--border-medium);
-  color: var(--text-primary);
+  color: var(--g-blue-text);
   font-size: 0.75rem;
   font-weight: 600;
-  padding: 0.25rem 0.6rem;
+  padding: 0.25rem 0.65rem;
   border-radius: var(--radius-xs);
   cursor: pointer;
   transition: all var(--transition-fast);
 }
 
 .btn-copy:hover {
-  background: var(--bg-secondary);
+  background: var(--g-blue-tint);
   border-color: var(--g-blue);
+  color: var(--g-blue-hover);
+}
+
+.btn-google-pill {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-radius: var(--radius-full);
+  background: var(--g-blue);
+  color: #ffffff;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  box-shadow: 0 1px 3px 0 rgba(60, 64, 67, 0.3), 0 4px 8px 3px rgba(60, 64, 67, 0.15);
+  transition: background-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.btn-google-pill:hover {
+  background: var(--g-blue-hover);
+  box-shadow: 0 2px 6px 0 rgba(60, 64, 67, 0.3), 0 6px 12px 4px rgba(60, 64, 67, 0.2);
 }
 
 .modal-note {
+  font-family: var(--font-body);
   font-size: 0.82rem;
   color: var(--text-secondary);
   text-align: center;
   margin-bottom: 1.5rem;
-  line-height: 1.5;
+  line-height: 1.55;
 }
 
-/* Toast Notifications */
+/* Toast Notifications (Google Developer Brand) */
 .toast-container {
   position: fixed;
   bottom: 1.5rem;
@@ -1523,12 +1715,15 @@ code {
 }
 
 .toast {
+  font-family: var(--font-body);
   background: #202124;
   color: #ffffff;
   padding: 0.75rem 1.25rem;
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow-lg);
-  font-size: 0.9rem;
+  border-left: 4px solid var(--g-green);
+  box-shadow: 0 6px 18px rgba(32, 33, 36, 0.28);
+  font-size: 0.88rem;
+  font-weight: 500;
   animation: slideInRight 0.2s ease forwards;
 }
 

@@ -7,12 +7,12 @@
   <meta name="theme-color" content="#1a73e8">
   <title>Google Cloud Study Jams 2026 | Google Developer Group BPPIMT</title>
 
-  <!-- Typography: Google Fonts (Inter & Outfit) + Material Symbols -->
+  <!-- Typography: Google Fonts (Google Sans style: Outfit, Roboto, Roboto Mono, Inter) + Material Symbols -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Roboto+Mono:wght@400;500;600;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=20261028_03">
 </head>
 <body>
   <!-- Google 4-Color Top Accent Bar -->
@@ -404,18 +404,30 @@
             <h3 class="card-form-title">Student Registration</h3>
             <p class="card-form-sub">Please fill in your details accurately.</p>
 
-            <!-- Student Success Alert Banner -->
+            <!-- Student Success Alert Banner (Google Brand Aesthetic) -->
             <div class="alert alert-success" id="studentFormSuccess" role="status" style="display: none;">
-              <div class="alert-icon">&#10003;</div>
+              <div class="alert-stripe-google" aria-hidden="true"></div>
+              <div class="alert-icon-wrapper">
+                <div class="alert-icon alert-icon-google">&#10003;</div>
+              </div>
               <div class="alert-content">
-                <strong id="studentSuccessInlineTitle">Registration Confirmed!</strong>
-                <p id="studentSuccessInlineMessage">
+                <div class="alert-badge-row">
+                  <span class="badge-dots" aria-hidden="true">
+                    <span class="dot dot-blue"></span>
+                    <span class="dot dot-red"></span>
+                    <span class="dot dot-yellow"></span>
+                    <span class="dot dot-green"></span>
+                  </span>
+                  <span class="alert-brand-tag">GOOGLE DEVELOPER GROUP &bull; BPPIMT</span>
+                </div>
+                <strong class="alert-success-title" id="studentSuccessInlineTitle">Registration Confirmed!</strong>
+                <p class="alert-success-body" id="studentSuccessInlineMessage">
                   Welcome to Google Cloud Study Jams 2026! Your spot has been secured.
                 </p>
                 <div class="inline-success-meta">
-                  <span>Participant: <strong id="studentSuccessInlineName">&ndash;</strong></span>
+                  <span class="meta-item">Participant: <strong id="studentSuccessInlineName">&ndash;</strong></span>
                   <span class="inline-success-divider">&bull;</span>
-                  <span>ID: <code id="studentSuccessInlineId">&ndash;</code></span>
+                  <span class="meta-item">Registration ID: <code class="google-id-badge" id="studentSuccessInlineId">&ndash;</code></span>
                 </div>
               </div>
             </div>
@@ -621,18 +633,30 @@
             <h3 class="card-form-title">Become a Mentor</h3>
             <p class="card-form-sub">Volunteer to mentor during Study Jams 2026.</p>
 
-            <!-- Mentor Success Alert Banner -->
-            <div class="alert alert-success" id="mentorFormSuccess" role="status" style="display: none;">
-              <div class="alert-icon">&#10003;</div>
+            <!-- Mentor Success Alert Banner (Google Brand Aesthetic) -->
+            <div class="alert alert-success alert-success-mentor" id="mentorFormSuccess" role="status" style="display: none;">
+              <div class="alert-stripe-google" aria-hidden="true"></div>
+              <div class="alert-icon-wrapper">
+                <div class="alert-icon alert-icon-google alert-icon-mentor">&#9733;</div>
+              </div>
               <div class="alert-content">
-                <strong id="mentorSuccessInlineTitle">Application Received!</strong>
-                <p id="mentorSuccessInlineMessage">
+                <div class="alert-badge-row">
+                  <span class="badge-dots" aria-hidden="true">
+                    <span class="dot dot-blue"></span>
+                    <span class="dot dot-red"></span>
+                    <span class="dot dot-yellow"></span>
+                    <span class="dot dot-green"></span>
+                  </span>
+                  <span class="alert-brand-tag alert-brand-tag-blue">GDG BPPIMT &bull; MENTOR CIRCLE</span>
+                </div>
+                <strong class="alert-success-title alert-title-blue" id="mentorSuccessInlineTitle">Application Received!</strong>
+                <p class="alert-success-body" id="mentorSuccessInlineMessage">
                   Thank you! Your community mentor application has been recorded.
                 </p>
                 <div class="inline-success-meta">
-                  <span>Applicant: <strong id="mentorSuccessInlineName">&ndash;</strong></span>
+                  <span class="meta-item">Applicant: <strong id="mentorSuccessInlineName">&ndash;</strong></span>
                   <span class="inline-success-divider">&bull;</span>
-                  <span>ID: <code id="mentorSuccessInlineId">&ndash;</code></span>
+                  <span class="meta-item">Application ID: <code class="google-id-badge" id="mentorSuccessInlineId">&ndash;</code></span>
                 </div>
               </div>
             </div>
@@ -846,11 +870,25 @@
     </section>
   </main>
 
-  <!-- Student Confirmation Modal -->
+  <!-- Student Confirmation Modal (Google Brand Aesthetic) -->
   <div class="modal-backdrop" id="studentSuccessModal" role="dialog" aria-modal="true" aria-labelledby="studentSuccessTitle" style="display: none;">
     <div class="modal-card">
+      <div class="modal-stripe-google" aria-hidden="true"></div>
       <div class="modal-header">
-        <div class="success-badge-circle" aria-hidden="true">&#10003;</div>
+        <div class="success-badge-circle" aria-hidden="true">
+          <svg class="google-check-icon" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
+        <div class="modal-eyebrow">
+          <span class="badge-dots" aria-hidden="true">
+            <span class="dot dot-blue"></span>
+            <span class="dot dot-red"></span>
+            <span class="dot dot-yellow"></span>
+            <span class="dot dot-green"></span>
+          </span>
+          <span>GOOGLE DEVELOPER GROUP &bull; BPPIMT</span>
+        </div>
         <h3 class="modal-title" id="studentSuccessTitle">Registration Confirmed</h3>
         <p class="modal-sub">Welcome to Google Cloud Study Jams 2026!</p>
       </div>
@@ -858,7 +896,15 @@
       <div class="modal-body">
         <div class="ticket-card">
           <div class="ticket-header">
-            <span>Google Developer Group BPPIMT &bull; Study Jams</span>
+            <div class="ticket-brand">
+              <span class="badge-dots badge-dots-mini" aria-hidden="true">
+                <span class="dot dot-blue"></span>
+                <span class="dot dot-red"></span>
+                <span class="dot dot-yellow"></span>
+                <span class="dot dot-green"></span>
+              </span>
+              <span>Cloud Study Jams &bull; 2026</span>
+            </div>
             <span class="ticket-status">CONFIRMED</span>
           </div>
 
@@ -893,24 +939,42 @@
       </div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary btn-block" id="closeStudentSuccessBtn">Done</button>
+        <button type="button" class="btn btn-primary btn-block btn-google-pill" id="closeStudentSuccessBtn">Done</button>
       </div>
     </div>
   </div>
 
-  <!-- Mentor Confirmation Modal -->
+  <!-- Mentor Confirmation Modal (Google Brand Aesthetic) -->
   <div class="modal-backdrop" id="mentorSuccessModal" role="dialog" aria-modal="true" aria-labelledby="mentorSuccessTitle" style="display: none;">
     <div class="modal-card">
+      <div class="modal-stripe-google" aria-hidden="true"></div>
       <div class="modal-header">
         <div class="success-badge-circle badge-circle-mentor" aria-hidden="true">&#9733;</div>
+        <div class="modal-eyebrow">
+          <span class="badge-dots" aria-hidden="true">
+            <span class="dot dot-blue"></span>
+            <span class="dot dot-red"></span>
+            <span class="dot dot-yellow"></span>
+            <span class="dot dot-green"></span>
+          </span>
+          <span>GDG BPPIMT &bull; MENTOR CIRCLE</span>
+        </div>
         <h3 class="modal-title" id="mentorSuccessTitle">Application Received</h3>
         <p class="modal-sub">Thank you for volunteering to mentor!</p>
       </div>
 
       <div class="modal-body">
-        <div class="ticket-card">
+        <div class="ticket-card ticket-card-mentor">
           <div class="ticket-header">
-            <span>Google Developer Group BPPIMT &bull; Mentor Circle</span>
+            <div class="ticket-brand">
+              <span class="badge-dots badge-dots-mini" aria-hidden="true">
+                <span class="dot dot-blue"></span>
+                <span class="dot dot-red"></span>
+                <span class="dot dot-yellow"></span>
+                <span class="dot dot-green"></span>
+              </span>
+              <span>Mentor Circle &bull; 2026</span>
+            </div>
             <span class="ticket-status status-mentor">RECEIVED</span>
           </div>
 
@@ -941,7 +1005,7 @@
       </div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary btn-block" id="closeMentorSuccessBtn">Done</button>
+        <button type="button" class="btn btn-primary btn-block btn-google-pill" id="closeMentorSuccessBtn">Done</button>
       </div>
     </div>
   </div>
@@ -977,7 +1041,7 @@
   </footer>
 
   <!-- Runtime Configuration & Main Scripts -->
-  <script src="config.js?v=20261028_02"></script>
-  <script src="script.js?v=20261028_02"></script>
+  <script src="config.js?v=20261028_03"></script>
+  <script src="script.js?v=20261028_03"></script>
 </body>
 </html>
