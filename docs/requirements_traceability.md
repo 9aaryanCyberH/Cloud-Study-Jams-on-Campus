@@ -9,42 +9,16 @@
 
 ---
 
-## 1. System Architecture Flowchart
+## 1. System Architecture Diagram
 
-```mermaid
-flowchart LR
-    subgraph Client ["Client Browser Layer"]
-        A["Student / Mentor Attendee"] --> B["Vanilla HTML5/CSS3/JS Web App<br/>(index.html, style.css, script.js)"]
-    end
+![CloudPort Serverless System Architecture](screenshots/system_architecture.png)
 
-    subgraph Hosting ["Static Hosting (Google Edge Delivery)"]
-        B -.->|"1. GET / (Edge Delivery)"| C["Google Firebase Edge Hosting<br/>https://cloud-study-jams-3f931.web.app<br/>GCS Static Bucket Compatible"]
-    end
-
-    subgraph Backend ["Serverless Compute (GCP)"]
-        B ==>>|"2. POST /register_user (JSON)"| D["Cloud Functions (2nd Gen): cloudport-register<br/>Python 3.12 Functions Framework<br/>CORS Validation & Honeypot Filter"]
-        D -.->|"Security IAM Binding"| E["Service Account (Least Privilege)<br/>cloudport-register-sa@<br/>roles/datastore.user"]
-    end
-
-    subgraph Database ["Managed NoSQL Storage (GCP)"]
-        D ==>>|"3. Deterministic SHA-256 Idempotent Write"| F[("Google Cloud Firestore (Native Mode)<br/>Project: cloud-study-jams-3f931 &bull; nam5<br/>Collection: 'registrations'")]
-        B -.->|"Direct Native REST Failover"| F
-    end
-
-    subgraph AsyncBonus ["Decoupled Messaging (Bonus)"]
-        D -.->|"4. Non-Blocking Event Publish"| G["Cloud Pub/Sub<br/>Topic: registration-created<br/>(SendGrid / Notification Trigger)"]
-    end
-
-    classDef gBlue fill:#e8f0fe,stroke:#1a73e8,stroke-width:1.5px,color:#1967d2;
-    classDef gRed fill:#fce8e6,stroke:#ea4335,stroke-width:1.5px,color:#c5221f;
-    classDef gYellow fill:#fef7e0,stroke:#fbbc04,stroke-width:1.5px,color:#b06000;
-    classDef gGreen fill:#e6f4ea,stroke:#34a853,stroke-width:1.5px,color:#137333;
-
-    class C,B gBlue;
-    class D gRed;
-    class F gYellow;
-    class E,G,A gGreen;
-```
+### Key Architectural Layers:
+- **Client Tier:** Vanilla HTML5, CSS3, ES6+ JS web application with real-time validation and anti-spam honeypot.
+- **Edge CDN:** Deployed to Firebase Hosting / GCS static bucket for sub-100ms global delivery.
+- **Serverless API:** Google Cloud Functions (2nd Gen, Python 3.12) handling CORS security, input validation, and SHA-256 idempotency hashing.
+- **Database Layer:** Google Cloud Firestore Native Mode (`registrations` collection) guaranteeing ACID transactions and duplicate rejection.
+- **Decoupled Pipeline:** Cloud Pub/Sub (`registration-created` topic) for asynchronous worker notifications.
 
 ---
 
@@ -139,7 +113,7 @@ Every requirement in this specification is audited against concrete source code,
 | :--- | :--- | :--- | :---: |
 | **Frontend Source Code** | `index.html`, `style.css`, `script.js` | [`frontend/index.html`](file:///d:/CLouder/frontend/index.html)<br>[`frontend/style.css`](file:///d:/CLouder/frontend/style.css)<br>[`frontend/script.js`](file:///d:/CLouder/frontend/script.js) | ✅ **PASS** (Zero-flicker, accessible, responsive) |
 | **Backend Source Code** | `main.py`, `requirements.txt` | [`backend/main.py`](file:///d:/CLouder/backend/main.py)<br>[`backend/requirements.txt`](file:///d:/CLouder/backend/requirements.txt)<br>[`backend/validate.py`](file:///d:/CLouder/backend/validate.py) | ✅ **PASS** (28/28 Unit Tests Passing) |
-| **Architecture Diagram** | Visual architecture diagram | Embedded Mermaid diagram in [`README.md#L67-L100`](file:///d:/CLouder/README.md#L67-L100) & [`docs/architecture.md`](file:///d:/CLouder/docs/architecture.md) | ✅ **PASS** |
+| **Architecture Diagram** | Visual architecture diagram | Visual architecture infographic in [`docs/screenshots/system_architecture.png`](file:///d:/CLouder/docs/screenshots/system_architecture.png), [`README.md`](file:///d:/CLouder/README.md), and [`docs/architecture.md`](file:///d:/CLouder/docs/architecture.md) | ✅ **PASS** |
 | **Comprehensive README** | Detailed deployment steps & architecture | [`README.md`](file:///d:/CLouder/README.md) (495 lines with gcloud, terraform, test curl, and evidence sections) | ✅ **PASS** |
 | **Live Website URL** | Public link to hosted static site | Live Edge Hosting on Google CDN: [https://cloud-study-jams-3f931.web.app](https://cloud-study-jams-3f931.web.app) | ✅ **PASS** (Live Deployment Operational) |
 | **Live Function Endpoint** | HTTP trigger URL of Cloud Function / Firestore REST | Direct Firestore Native REST endpoint + Cloud Functions handler (`backend/main.py`) | ✅ **PASS** (Real-Time Writes Verified) |

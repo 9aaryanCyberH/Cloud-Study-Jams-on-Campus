@@ -21,7 +21,7 @@ The platform pairs a responsive, Google-branded HTML5/CSS3/JavaScript event land
 
 1. [Project Overview & Objectives](#1-project-overview--objectives)
 2. [Features & Technology Stack](#2-features--technology-stack)
-3. [System Architecture Diagrams (Mermaid)](#3-system-architecture-diagrams)
+3. [System Architecture Diagram](#3-system-architecture-diagram)
 4. [Project Directory Structure](#4-project-directory-structure)
 5. [Prerequisites & Local Setup](#5-prerequisites--local-setup)
 6. [Google Cloud Project Setup & API Enablement](#6-google-cloud-project-setup--api-enablement)
@@ -76,39 +76,17 @@ The platform pairs a responsive, Google-branded HTML5/CSS3/JavaScript event land
 4. **NoSQL Persistence:** The record is atomically committed to Cloud Firestore Native Mode (`registrations` collection) using the deterministic hash as the document ID to prevent duplicate entries.
 5. **Decoupled Event Streaming:** A Cloud Pub/Sub event (`registration-created`) is emitted asynchronously for downstream notifications without delaying the user HTTP response.
 
-<details>
-<summary><b>Click to expand Request-Response Lifecycle Sequence Protocol</b></summary>
+### Request-Response Lifecycle Protocol:
 
-```mermaid
-sequenceDiagram
-    autonumber
-    actor Attendee as Participant / Mentor
-    participant Web as Google Hosting (Edge CDN)
-    participant API as Cloud Functions (Python 3.12)
-    participant DB as Cloud Firestore (Native Mode)
-    participant PS as Cloud Pub/Sub (Async Worker)
-
-    Attendee->>Web: GET / (index.html, style.css, script.js)
-    Web-->>Attendee: 200 OK (Gzipped Static Bundle Cached)
-
-    Attendee->>API: POST /register_user (JSON Payload)
-    API->>API: Verify CORS Origin & Anti-Spam Honeypot
-    API->>API: Validate RFC 5322 Email & Field Boundaries
-    API->>API: Compute SHA-256 Deterministic Hash
-
-    alt Already Registered (Duplicate Submission)
-        API->>DB: create(doc_id, payload)
-        DB-->>API: Conflict: ALREADY_EXISTS (HTTP 409)
-        API-->>Attendee: 409 Conflict {"ok": false, "code": "DUPLICATE_EMAIL"}
-    else New Registration Record
-        API->>DB: create(doc_id, payload + SERVER_TIMESTAMP)
-        DB-->>API: Write Acknowledged (HTTP 201)
-        API-)PS: publish(registration_event)
-        API-->>Attendee: 201 Created {"ok": true, "id": doc_id}
-    end
-```
-
-</details>
+| Step | Phase | Action | Component Details |
+|:---:|---|---|---|
+| **1** | **Asset Delivery** | `GET /` | Edge CDN serves minified static assets (`index.html`, `style.css`, `script.js`) with sub-100ms latency. |
+| **2** | **Client Validation** | Input Checks | Immediate RFC 5322 regex validation, boundary checks, and hidden bot honeypot detection. |
+| **3** | **CORS & Dispatch** | `POST /register_user` | Cloud Functions 2nd Gen checks allowed origins and verifies required schema fields. |
+| **4** | **Idempotency** | SHA-256 Hash | Server calculates deterministic SHA-256 hash of normalized email as document ID. |
+| **5** | **Atomic Write** | Firestore Commit | Creates record in Firestore Native `registrations` collection with UTC server timestamp. |
+| **6** | **Conflict Handling** | Duplicate Check | Returns `409 Conflict` if email is already registered; returns `201 Created` for new records. |
+| **7** | **Async Decoupling** | Pub/Sub Event | Emits `registration-created` event to asynchronous worker without blocking client response. |
 
 ---
 
@@ -527,7 +505,7 @@ gcloud iam service-accounts delete cloudport-register-sa@${PROJECT_ID}.iam.gserv
 - [x] **Backend Cloud Function:** Python 3.12 / 3.11 source code in [`backend/main.py`](file:///d:/CLouder/backend/main.py), [`backend/validate.py`](file:///d:/CLouder/backend/validate.py), and manifest [`backend/requirements.txt`](file:///d:/CLouder/backend/requirements.txt).
 - [x] **Strict Zero AI/ML Compliance:** 100% pure cloud architecture and serverless design; zero AI/ML/LLM packages imported.
 - [x] **Zero Endpoint Leakage:** No API URL, endpoint configuration, or health status exposed in the visible UI.
-- [x] **Architecture Diagrams:** Complete Mermaid infrastructure flowchart & request-response sequence diagram embedded in Section 3 and [`docs/architecture.md`](file:///d:/CLouder/docs/architecture.md).
+- [x] **Architecture Diagrams:** Complete visual infrastructure architecture infographic & request-response lifecycle protocol embedded in Section 3 and [`docs/architecture.md`](file:///d:/CLouder/docs/architecture.md).
 - [x] **Automated Unit Tests:** 28/28 tests passing (100%) in [`backend/test_main.py`](file:///d:/CLouder/backend/test_main.py) and [`backend/test_validate.py`](file:///d:/CLouder/backend/test_validate.py).
 - [x] **Credential Hygiene:** Zero API secrets, keys, or passwords committed; clean `.gitignore`.
 - [x] **Live GCP & Firebase Deployment:** Live public website deployed at [https://cloud-study-jams-3f931.web.app](https://cloud-study-jams-3f931.web.app).
