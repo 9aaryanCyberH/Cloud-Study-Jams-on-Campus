@@ -438,8 +438,8 @@ curl -X POST "http://127.0.0.1:8080/register_user" \
 | **Alternative Live Mirror** | **LIVE (Google Edge Hosting)** | **https://cloud-study-jams-3f931.firebaseapp.com** |
 | **GitHub Repository** | **Public Codebase** | [https://github.com/9aaryanCyberH/Cloud-Study-Jams-on-Campus-](https://github.com/9aaryanCyberH/Cloud-Study-Jams-on-Campus-) |
 | **Google Cloud Project ID** | **Verified & Active** | `cloud-study-jams-3f931` (Project Number: `63766410669`) |
-| **Active GCP Owner Account** | Authenticated via gcloud / ADC | `edu.aaryankp@gmail.com` (Owner: Aaryan Kumar) |
-| **Live Database Backend** | **Verified Active (Firestore Native)** | `https://firestore.googleapis.com/v1/projects/cloud-study-jams-3f931/databases/(default)/documents/registrations` |
+| **Active GCP Owner Account** | Authenticated via gcloud / ADC | **edu.aaryankp@gmail.com** (Owner: Aaryan Kumar) |
+| **Live Database Backend** | **Verified Active (Firestore Native)** | **https://firestore.googleapis.com/v1/projects/cloud-study-jams-3f931/databases/(default)/documents/registrations** |
 | **Target GCP Region** | Verified Cloud Database | `nam5` (United States multi-region) |
 | **Firestore Database Mode** | **Native Mode (`FIRESTORE_NATIVE`)** | Database: `(default)`, Collection: `registrations` |
 | **Automated Test Suite** | **PASS (28/28 Passing - 100%)** | 12 Schema Validation + 16 Backend Integration Tests (0.069s) |
