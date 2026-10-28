@@ -2,11 +2,20 @@
 import hashlib
 import json
 import os
+import shutil
 import subprocess
 import sys
 import urllib.request
 
-GCLOUD = r"C:\Users\Aaryan Kumar\AppData\Local\Google\Cloud SDK\google-cloud-sdk\bin\gcloud.cmd"
+GCLOUD = (
+    shutil.which("gcloud")
+    or os.environ.get("GCLOUD_PATH")
+    or (
+        os.path.join(os.environ.get("LOCALAPPDATA", ""), r"Google\Cloud SDK\google-cloud-sdk\bin\gcloud.cmd")
+        if os.path.exists(os.path.join(os.environ.get("LOCALAPPDATA", ""), r"Google\Cloud SDK\google-cloud-sdk\bin\gcloud.cmd"))
+        else "gcloud"
+    )
+)
 PROJECT_ID = "cloud-study-jams-3f931"
 SITE_ID = "cloud-study-jams-3f931"
 FRONTEND_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend")

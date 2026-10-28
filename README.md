@@ -415,8 +415,8 @@ curl -X POST "http://127.0.0.1:8080/register_user" \
 | **Live Deployed Website** | **LIVE (Google Edge Hosting)** | **https://cloud-study-jams-3f931.web.app** |
 | **Alternative Live Mirror** | **LIVE (Google Edge Hosting)** | **https://cloud-study-jams-3f931.firebaseapp.com** |
 | **GitHub Repository** | **Public Codebase** | [https://github.com/9aaryanCyberH/Cloud-Study-Jams-on-Campus-](https://github.com/9aaryanCyberH/Cloud-Study-Jams-on-Campus-) |
-| **Google Cloud Project ID** | **Verified & Active** | `cloud-study-jams-3f931` (Project Number: `63766410669`) |
-| **Active GCP Owner Account** | Authenticated via gcloud / ADC | **edu.aaryankp@gmail.com** (Owner: Aaryan Kumar) |
+| **Google Cloud Project ID** | **Verified & Active** | `cloud-study-jams-3f931` |
+| **Active GCP Owner Account** | Authenticated via gcloud / ADC | **[Authorized Project Owner]** (Verified via Cloud IAM) |
 | **Live Database Backend** | **Verified Active (Firestore Native)** | **https://firestore.googleapis.com/v1/projects/cloud-study-jams-3f931/databases/(default)/documents/registrations** |
 | **Target GCP Region** | Verified Cloud Database | `nam5` (United States multi-region) |
 | **Firestore Database Mode** | **Native Mode (`FIRESTORE_NATIVE`)** | Database: `(default)`, Collection: `registrations` |
@@ -471,7 +471,7 @@ This screenshot captures the **IAM & Admin > Permissions** console for project `
 
 #### Verified Evidence & Role Bindings:
 * **Project Identity:** `cloud-study-jams-3f931` (`Cloud Study Jams`)
-* **Project Owner:** `edu.aaryankp@gmail.com` (Name: **Aaryan Kumar**, Role: `Owner`)
+* **Project Owner:** `[Authorized Project Owner]` (Role: `Owner`, IAM Verified)
 * **Automated Runtime Service Agent:** `firebase-adminsdk-fbsvc@cloud-study-jams-3f931.iam.gserviceaccount.com`
   * Role: `Firebase Admin SDK Administrator Service Agent`
   * Role: `Service Account Token Creator`

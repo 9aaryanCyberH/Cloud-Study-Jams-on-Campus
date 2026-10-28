@@ -19,9 +19,14 @@ param(
 $ErrorActionPreference = "Stop"
 
 # Locate gcloud binary
-$gcloud = "C:\Users\Aaryan Kumar\AppData\Local\Google\Cloud SDK\google-cloud-sdk\bin\gcloud.cmd"
-if (-not (Test-Path $gcloud)) {
-    $gcloud = "gcloud"
+$gcloud = (Get-Command gcloud -ErrorAction SilentlyContinue).Source
+if (-not $gcloud) {
+    $localGcloud = Join-Path $env:LOCALAPPDATA "Google\Cloud SDK\google-cloud-sdk\bin\gcloud.cmd"
+    if (Test-Path $localGcloud) {
+        $gcloud = $localGcloud
+    } else {
+        $gcloud = "gcloud"
+    }
 }
 
 Write-Host "=================================================================" -ForegroundColor Cyan
