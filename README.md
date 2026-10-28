@@ -435,7 +435,7 @@ curl -X POST "http://127.0.0.1:8080/register_user" \
 | Resource | Status | URL / Identifier |
 |---|---|---|
 | **Live Deployed Website** | **LIVE (Google Edge Hosting)** | **https://cloud-study-jams-3f931.web.app** |
-| **Alternative Live Mirror** | **LIVE (Google Edge Hosting)** | `https://cloud-study-jams-3f931.firebaseapp.com` |
+| **Alternative Live Mirror** | **LIVE (Google Edge Hosting)** | **https://cloud-study-jams-3f931.firebaseapp.com** |
 | **GitHub Repository** | **Public Codebase** | [https://github.com/9aaryanCyberH/Cloud-Study-Jams-on-Campus-](https://github.com/9aaryanCyberH/Cloud-Study-Jams-on-Campus-) |
 | **Google Cloud Project ID** | **Verified & Active** | `cloud-study-jams-3f931` (Project Number: `63766410669`) |
 | **Active GCP Owner Account** | Authenticated via gcloud / ADC | `edu.aaryankp@gmail.com` (Owner: Aaryan Kumar) |
