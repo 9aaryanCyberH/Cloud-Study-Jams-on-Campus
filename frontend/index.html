@@ -404,6 +404,22 @@
             <h3 class="card-form-title">Student Registration</h3>
             <p class="card-form-sub">Please fill in your details accurately.</p>
 
+            <!-- Student Success Alert Banner -->
+            <div class="alert alert-success" id="studentFormSuccess" role="status" style="display: none;">
+              <div class="alert-icon">&#10003;</div>
+              <div class="alert-content">
+                <strong id="studentSuccessInlineTitle">Registration Confirmed!</strong>
+                <p id="studentSuccessInlineMessage">
+                  Welcome to Google Cloud Study Jams 2026! Your spot has been secured.
+                </p>
+                <div class="inline-success-meta">
+                  <span>Participant: <strong id="studentSuccessInlineName">&ndash;</strong></span>
+                  <span class="inline-success-divider">&bull;</span>
+                  <span>ID: <code id="studentSuccessInlineId">&ndash;</code></span>
+                </div>
+              </div>
+            </div>
+
             <!-- Student Error Alert Banner -->
             <div class="alert alert-danger" id="studentFormError" role="alert" style="display: none;">
               <div class="alert-icon">&#10007;</div>
@@ -604,6 +620,22 @@
             <div class="card-stripe card-stripe-mentor" aria-hidden="true"></div>
             <h3 class="card-form-title">Become a Mentor</h3>
             <p class="card-form-sub">Volunteer to mentor during Study Jams 2026.</p>
+
+            <!-- Mentor Success Alert Banner -->
+            <div class="alert alert-success" id="mentorFormSuccess" role="status" style="display: none;">
+              <div class="alert-icon">&#10003;</div>
+              <div class="alert-content">
+                <strong id="mentorSuccessInlineTitle">Application Received!</strong>
+                <p id="mentorSuccessInlineMessage">
+                  Thank you! Your community mentor application has been recorded.
+                </p>
+                <div class="inline-success-meta">
+                  <span>Applicant: <strong id="mentorSuccessInlineName">&ndash;</strong></span>
+                  <span class="inline-success-divider">&bull;</span>
+                  <span>ID: <code id="mentorSuccessInlineId">&ndash;</code></span>
+                </div>
+              </div>
+            </div>
 
             <!-- Mentor Error Alert Banner -->
             <div class="alert alert-danger" id="mentorFormError" role="alert" style="display: none;">
@@ -945,7 +977,7 @@
   </footer>
 
   <!-- Runtime Configuration & Main Scripts -->
-  <script src="config.js"></script>
-  <script src="script.js"></script>
+  <script src="config.js?v=20261028_02"></script>
+  <script src="script.js?v=20261028_02"></script>
 </body>
 </html>

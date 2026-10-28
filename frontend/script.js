@@ -59,6 +59,11 @@
   const copyStudentIdBtn = document.getElementById('copyStudentIdBtn');
   const closeStudentSuccessBtn = document.getElementById('closeStudentSuccessBtn');
 
+  // Student Inline Success Banner Elements
+  const studentFormSuccess = document.getElementById('studentFormSuccess');
+  const studentSuccessInlineName = document.getElementById('studentSuccessInlineName');
+  const studentSuccessInlineId = document.getElementById('studentSuccessInlineId');
+
   // Mentor Form & Controls
   const mentorForm = document.getElementById('mentorRegistrationForm');
   const mentorNameInput = document.getElementById('mentorName');
@@ -90,6 +95,11 @@
   const confirmedMentorId = document.getElementById('confirmedMentorId');
   const copyMentorIdBtn = document.getElementById('copyMentorIdBtn');
   const closeMentorSuccessBtn = document.getElementById('closeMentorSuccessBtn');
+
+  // Mentor Inline Success Banner Elements
+  const mentorFormSuccess = document.getElementById('mentorFormSuccess');
+  const mentorSuccessInlineName = document.getElementById('mentorSuccessInlineName');
+  const mentorSuccessInlineId = document.getElementById('mentorSuccessInlineId');
 
   // -------------------------------------------------------------------------
   // Endpoint Resolution (Invisible in UI)
@@ -412,21 +422,12 @@
   if (studentForm) {
     studentForm.addEventListener('submit', async function (e) {
       e.preventDefault();
-      studentFormError.style.display = 'none';
+      if (studentFormError) studentFormError.style.display = 'none';
+      if (studentFormSuccess) studentFormSuccess.style.display = 'none';
 
       if (!validateStudentFields()) {
         studentErrorTitle.textContent = 'Incomplete Information';
         studentErrorMessage.textContent = 'Please review the highlighted fields above.';
-        studentFormError.style.display = 'flex';
-        return;
-      }
-
-      const endpoint = getActiveEndpoint();
-      const statusCheck = checkEndpointStatus(endpoint);
-      if (!statusCheck.ok) {
-        console.warn('[CloudPort] Endpoint check failed:', statusCheck.message, { endpoint, origin: window.location.origin });
-        studentErrorTitle.textContent = statusCheck.title;
-        studentErrorMessage.textContent = statusCheck.message;
         studentFormError.style.display = 'flex';
         return;
       }
@@ -451,19 +452,28 @@
         const result = await submitRegistration(payload);
 
         if (result.ok) {
-          // Success Display
-          confirmedStudentName.textContent = payload.name;
-          confirmedStudentEmail.textContent = payload.email;
-          confirmedStudentInterest.textContent = payload.interest;
-          confirmedStudentId.textContent = result.id || 'CONFIRMED';
+          // Success Display (Both Modal and Inline Banner)
+          if (confirmedStudentName) confirmedStudentName.textContent = payload.name;
+          if (confirmedStudentEmail) confirmedStudentEmail.textContent = payload.email;
+          if (confirmedStudentInterest) confirmedStudentInterest.textContent = payload.interest;
+          if (confirmedStudentId) confirmedStudentId.textContent = result.id || 'CONFIRMED';
 
-          studentSuccessModal.style.display = 'flex';
+          if (studentSuccessInlineName) studentSuccessInlineName.textContent = payload.name;
+          if (studentSuccessInlineId) studentSuccessInlineId.textContent = result.id || 'CONFIRMED';
+          if (studentFormSuccess) studentFormSuccess.style.display = 'flex';
+          if (studentFormError) studentFormError.style.display = 'none';
+
+          if (studentSuccessModal) studentSuccessModal.style.display = 'flex';
           studentForm.reset();
 
           // Reset validation styles
           [studentNameInput, studentEmailInput, studentDeptSelect, studentYearSelect, studentInterestSelect].forEach(el => {
             el.classList.remove('is-valid');
           });
+
+          if (studentFormSuccess) {
+            studentFormSuccess.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
         } else if (result.status === 409 || result.code === 'DUPLICATE_EMAIL') {
           studentErrorTitle.textContent = 'Already Registered';
           studentErrorMessage.textContent = result.error || 'This email address is already registered for Study Jams 2026.';
@@ -500,7 +510,8 @@
   if (mentorForm) {
     mentorForm.addEventListener('submit', async function (e) {
       e.preventDefault();
-      mentorFormError.style.display = 'none';
+      if (mentorFormError) mentorFormError.style.display = 'none';
+      if (mentorFormSuccess) mentorFormSuccess.style.display = 'none';
 
       if (!validateMentorFields()) {
         mentorErrorTitle.textContent = 'Incomplete Information';
@@ -530,18 +541,27 @@
         const result = await submitRegistration(payload);
 
         if (result.ok) {
-          // Success Display
-          confirmedMentorName.textContent = payload.name;
-          confirmedMentorEmail.textContent = payload.email;
-          confirmedMentorId.textContent = result.id || 'CONFIRMED';
+          // Success Display (Both Modal and Inline Banner)
+          if (confirmedMentorName) confirmedMentorName.textContent = payload.name;
+          if (confirmedMentorEmail) confirmedMentorEmail.textContent = payload.email;
+          if (confirmedMentorId) confirmedMentorId.textContent = result.id || 'CONFIRMED';
 
-          mentorSuccessModal.style.display = 'flex';
+          if (mentorSuccessInlineName) mentorSuccessInlineName.textContent = payload.name;
+          if (mentorSuccessInlineId) mentorSuccessInlineId.textContent = result.id || 'CONFIRMED';
+          if (mentorFormSuccess) mentorFormSuccess.style.display = 'flex';
+          if (mentorFormError) mentorFormError.style.display = 'none';
+
+          if (mentorSuccessModal) mentorSuccessModal.style.display = 'flex';
           mentorForm.reset();
 
           // Reset validation styles
           [mentorNameInput, mentorEmailInput, mentorRoleInput, mentorSkillsInput, mentorAreasInput, mentorMotivationInput].forEach(el => {
             el.classList.remove('is-valid');
           });
+
+          if (mentorFormSuccess) {
+            mentorFormSuccess.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
         } else if (result.status === 409 || result.code === 'DUPLICATE_EMAIL') {
           mentorErrorTitle.textContent = 'Already Submitted';
           mentorErrorMessage.textContent = result.error || 'This email address has already submitted a mentor application.';

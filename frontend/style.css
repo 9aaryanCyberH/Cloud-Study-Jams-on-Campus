@@ -1257,6 +1257,40 @@ code {
   color: #a51d24;
 }
 
+.alert-success {
+  background: var(--g-green-tint, #e6f4ea);
+  border: 1px solid rgba(52, 168, 83, 0.35);
+  color: #137333;
+}
+
+.alert-success p {
+  color: #0d652d;
+}
+
+.inline-success-meta {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  color: #137333;
+}
+
+.inline-success-meta code {
+  background: rgba(52, 168, 83, 0.15);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.82rem;
+  color: #0d652d;
+  font-weight: 600;
+}
+
+.inline-success-divider {
+  opacity: 0.6;
+}
+
 /* FAQ Accordion */
 .faq-accordion {
   max-width: 820px;
