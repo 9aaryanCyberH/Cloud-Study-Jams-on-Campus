@@ -425,18 +425,19 @@ curl -X POST "http://127.0.0.1:8080/register_user" \
 
 | Resource | Status | URL / Identifier |
 |---|---|---|
-| **Google Cloud Project ID** | Configured & Authenticated | `clouder-513011` (Project # `644588529109`) |
+| **Live Deployed Website** | **LIVE (Google Hosting)** | **https://cloud-study-jams-3f931.web.app** |
+| **Alternative Live Mirror** | **LIVE (Google Hosting)** | `https://cloud-study-jams-3f931.firebaseapp.com` |
+| **Google Cloud Project ID** | Configured & Authenticated | `cloud-study-jams-3f931` (Project # `63766410669`) / `clouder-513011` |
 | **Active GCP Account** | Authenticated via gcloud / ADC | `edu.aaryankp@gmail.com` |
-| **Live Static Website (GCS)** | `[READY FOR CLOUD PROVISIONING]` | Destination: `https://storage.googleapis.com/clouder-513011-cloudport-site/index.html` |
-| **Live Cloud Function Endpoint** | `[READY FOR CLOUD PROVISIONING]` | Destination: `https://us-central1-clouder-513011.cloudfunctions.net/cloudport-register` |
+| **Backend API Endpoint** | `[READY FOR CLOUD PROVISIONING]` | Destination: `https://us-central1-clouder-513011.cloudfunctions.net/cloudport-register` |
 | **Target GCP Region** | Verified | `us-central1` (Default) or `asia-south1` |
 | **Firestore Database Mode** | Verified Code Architecture | `(default)` in Native Mode (`FIRESTORE_NATIVE`) |
 | **Automated Test Suite** | **PASS (28/28 Passing)** | 12 Schema Validation + 16 Mocked Backend Integration Tests (0.071s) |
 | **Offline Development Runner** | **Operational** | Full emulation running at `http://127.0.0.1:3000` & `http://127.0.0.1:8080` |
 
-> [!NOTE]
-> **Google Cloud Billing Notice:**
-> The project `clouder-513011` is fully configured, authenticated, and enabled for `firestore.googleapis.com` and `storage.googleapis.com`. In Google Cloud Platform, live provisioning of Cloud Functions 2nd Gen (Cloud Build/Artifact Registry) and Cloud Storage buckets requires an active Cloud Billing account linked to the project. All application source code, automated tests, deployment scripts (`scripts/deploy_core.ps1`), and Infrastructure-as-Code Terraform configurations (`main.tf`) are 100% verified and production-ready to deploy as soon as a billing account is attached.
+> [!TIP]
+> **Zero-Billing Google Hosting Deployment:**
+> The static frontend for Google Cloud Study Jams 2026 has been deployed to Google's global SSD edge CDN without requiring a credit card or billing account. It is accessible worldwide at **https://cloud-study-jams-3f931.web.app**. All backend Cloud Function source code, Firestore configuration, deployment scripts (`scripts/deploy_core.ps1`), and Infrastructure-as-Code Terraform manifests (`main.tf`) are production-ready.
 
 ---
 
