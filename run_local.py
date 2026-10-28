@@ -21,7 +21,7 @@ sys.path.insert(0, BACKEND_DIR)
 
 # Enable Local Dev mode
 os.environ["LOCAL_DEV"] = "true"
-os.environ["ALLOWED_ORIGINS"] = "http://localhost:3000,http://127.0.0.1:3000,http://localhost:8080,http://127.0.0.1:8080"
+os.environ["ALLOWED_ORIGINS"] = "http://localhost:3000,http://127.0.0.1:3000,http://localhost:8080,http://127.0.0.1:8080,https://cloud-study-jams-3f931.web.app,https://cloud-study-jams-3f931.firebaseapp.com"
 os.environ["PROJECT_ID"] = "cloudport-local-dev"
 os.environ["COLLECTION"] = "registrations"
 

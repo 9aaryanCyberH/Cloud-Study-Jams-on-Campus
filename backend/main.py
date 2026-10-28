@@ -181,6 +181,8 @@ def register_user(request):
             "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With",
             "Access-Control-Max-Age": "3600",
         }
+        if request.headers.get("Access-Control-Request-Private-Network") == "true":
+            cors_headers["Access-Control-Allow-Private-Network"] = "true"
         res = _build_response({}, 204, effective_origin, cors_headers)
         res.set_data(b"")
         return res

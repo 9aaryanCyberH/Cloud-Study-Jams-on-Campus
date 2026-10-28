@@ -122,6 +122,29 @@
     }
   }
 
+  function checkEndpointStatus(endpoint) {
+    if (!endpoint) {
+      const isHttps = window.location.protocol === 'https:';
+      return {
+        ok: false,
+        title: 'Backend Service Not Linked',
+        message: isHttps
+          ? 'No cloud backend API is linked to this deployed website yet. For local evaluation with the Python backend, open http://127.0.0.1:3000.'
+          : 'No backend API endpoint is configured. Ensure the backend server is running on http://127.0.0.1:8080.'
+      };
+    }
+
+    if (window.location.protocol === 'https:' && endpoint.startsWith('http://')) {
+      return {
+        ok: false,
+        title: 'Insecure Endpoint Blocked',
+        message: `This live site is on HTTPS, which prevents connecting to an unencrypted HTTP endpoint (${endpoint}) under browser Mixed Content rules. A deployed HTTPS Cloud Function URL is required.`
+      };
+    }
+
+    return { ok: true };
+  }
+
   // -------------------------------------------------------------------------
   // Validation Helpers
   // -------------------------------------------------------------------------
@@ -309,9 +332,11 @@
       }
 
       const endpoint = getActiveEndpoint();
-      if (!endpoint) {
-        studentErrorTitle.textContent = 'Registration Service Unavailable';
-        studentErrorMessage.textContent = 'The registration service is temporarily unavailable. Please try again shortly.';
+      const statusCheck = checkEndpointStatus(endpoint);
+      if (!statusCheck.ok) {
+        console.warn('[CloudPort] Endpoint check failed:', statusCheck.message, { endpoint, origin: window.location.origin });
+        studentErrorTitle.textContent = statusCheck.title;
+        studentErrorMessage.textContent = statusCheck.message;
         studentFormError.style.display = 'flex';
         return;
       }
@@ -332,8 +357,10 @@
       studentSpinner.style.display = 'inline-block';
       studentBtnText.textContent = 'Registering...';
 
+      const targetUrl = `${endpoint.replace(/\/+$/, '')}/register_user`;
+
       try {
-        const response = await fetch(`${endpoint.replace(/\/+$/, '')}/register_user`, {
+        const response = await fetch(targetUrl, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -365,14 +392,27 @@
           studentErrorTitle.textContent = 'Validation Error';
           studentErrorMessage.textContent = data.error || 'Please ensure all submitted details are formatted correctly.';
           studentFormError.style.display = 'flex';
+        } else if (response.status === 403) {
+          studentErrorTitle.textContent = 'Access Denied (CORS)';
+          studentErrorMessage.textContent = data.error || 'The backend rejected the request from this origin (' + window.location.origin + ').';
+          studentFormError.style.display = 'flex';
+        } else if (response.status === 404) {
+          studentErrorTitle.textContent = 'Endpoint Not Found (404)';
+          studentErrorMessage.textContent = 'The registration path (/register_user) was not found on the backend service.';
+          studentFormError.style.display = 'flex';
+        } else if (response.status === 429) {
+          studentErrorTitle.textContent = 'Too Many Requests (429)';
+          studentErrorMessage.textContent = 'Rate limit exceeded. Please wait a moment before trying again.';
+          studentFormError.style.display = 'flex';
         } else {
-          studentErrorTitle.textContent = 'Submission Failed';
-          studentErrorMessage.textContent = data.error || 'A server error occurred. Please try again later.';
+          studentErrorTitle.textContent = 'Backend Error (HTTP ' + response.status + ')';
+          studentErrorMessage.textContent = data.error || 'The backend service encountered an error processing your registration.';
           studentFormError.style.display = 'flex';
         }
       } catch (err) {
-        studentErrorTitle.textContent = 'Connection Error';
-        studentErrorMessage.textContent = 'Unable to reach the registration service. Please verify your internet connection.';
+        console.error('[CloudPort] Registration network failure:', err, { targetUrl, origin: window.location.origin });
+        studentErrorTitle.textContent = 'Backend Connection Failed';
+        studentErrorMessage.textContent = `Could not reach the registration service at "${endpoint}". Please verify that the backend server is running and accessible.`;
         studentFormError.style.display = 'flex';
       } finally {
         studentSubmitBtn.disabled = false;
@@ -398,9 +438,11 @@
       }
 
       const endpoint = getActiveEndpoint();
-      if (!endpoint) {
-        mentorErrorTitle.textContent = 'Application Service Unavailable';
-        mentorErrorMessage.textContent = 'The mentor application service is temporarily unavailable. Please try again shortly.';
+      const statusCheck = checkEndpointStatus(endpoint);
+      if (!statusCheck.ok) {
+        console.warn('[CloudPort] Endpoint check failed:', statusCheck.message, { endpoint, origin: window.location.origin });
+        mentorErrorTitle.textContent = statusCheck.title;
+        mentorErrorMessage.textContent = statusCheck.message;
         mentorFormError.style.display = 'flex';
         return;
       }
@@ -422,8 +464,10 @@
       mentorSpinner.style.display = 'inline-block';
       mentorBtnText.textContent = 'Submitting Application...';
 
+      const targetUrl = `${endpoint.replace(/\/+$/, '')}/register_user`;
+
       try {
-        const response = await fetch(`${endpoint.replace(/\/+$/, '')}/register_user`, {
+        const response = await fetch(targetUrl, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -454,14 +498,27 @@
           mentorErrorTitle.textContent = 'Validation Error';
           mentorErrorMessage.textContent = data.error || 'Please ensure all submitted details are formatted correctly.';
           mentorFormError.style.display = 'flex';
+        } else if (response.status === 403) {
+          mentorErrorTitle.textContent = 'Access Denied (CORS)';
+          mentorErrorMessage.textContent = data.error || 'The backend rejected the request from this origin (' + window.location.origin + ').';
+          mentorFormError.style.display = 'flex';
+        } else if (response.status === 404) {
+          mentorErrorTitle.textContent = 'Endpoint Not Found (404)';
+          mentorErrorMessage.textContent = 'The registration path (/register_user) was not found on the backend service.';
+          mentorFormError.style.display = 'flex';
+        } else if (response.status === 429) {
+          mentorErrorTitle.textContent = 'Too Many Requests (429)';
+          mentorErrorMessage.textContent = 'Rate limit exceeded. Please wait a moment before trying again.';
+          mentorFormError.style.display = 'flex';
         } else {
-          mentorErrorTitle.textContent = 'Submission Failed';
-          mentorErrorMessage.textContent = data.error || 'A server error occurred. Please try again later.';
+          mentorErrorTitle.textContent = 'Backend Error (HTTP ' + response.status + ')';
+          mentorErrorMessage.textContent = data.error || 'The backend service encountered an error processing your application.';
           mentorFormError.style.display = 'flex';
         }
       } catch (err) {
-        mentorErrorTitle.textContent = 'Connection Error';
-        mentorErrorMessage.textContent = 'Unable to reach the mentor application service. Please verify your internet connection.';
+        console.error('[CloudPort] Mentor application network failure:', err, { targetUrl, origin: window.location.origin });
+        mentorErrorTitle.textContent = 'Backend Connection Failed';
+        mentorErrorMessage.textContent = `Could not reach the mentor application service at "${endpoint}". Please verify that the backend server is running and accessible.`;
         mentorFormError.style.display = 'flex';
       } finally {
         mentorSubmitBtn.disabled = false;
