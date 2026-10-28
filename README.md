@@ -6,6 +6,7 @@
 [![Cloud Storage](https://img.shields.io/badge/Cloud_Storage-4285F4?style=for-the-badge&logo=google-cloud&logoColor=white)](https://cloud.google.com/storage)
 [![Python 3.11+](https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 [![Terraform](https://img.shields.io/badge/Terraform-844FBA?style=for-the-badge&logo=terraform&logoColor=white)](https://www.terraform.io/)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/9aaryanCyberH/Cloud-Study-Jams-on-Campus-)
 
 A complete, production-grade event registration and community platform engineered by **Aaryan Kumar** for **Google Cloud Study Jams 2026**, organized by **Google Developer Groups on Campus, B. P. Poddar Institute of Management & Technology (BPPIMT), Kolkata**.
 
@@ -427,6 +428,7 @@ curl -X POST "http://127.0.0.1:8080/register_user" \
 |---|---|---|
 | **Live Deployed Website** | **LIVE (Google Hosting)** | **https://cloud-study-jams-3f931.web.app** |
 | **Alternative Live Mirror** | **LIVE (Google Hosting)** | `https://cloud-study-jams-3f931.firebaseapp.com` |
+| **GitHub Repository** | **Public Codebase** | [https://github.com/9aaryanCyberH/Cloud-Study-Jams-on-Campus-](https://github.com/9aaryanCyberH/Cloud-Study-Jams-on-Campus-) |
 | **Google Cloud Project ID** | Configured & Authenticated | `cloud-study-jams-3f931` (Project # `63766410669`) / `clouder-513011` |
 | **Active GCP Account** | Authenticated via gcloud / ADC | `edu.aaryankp@gmail.com` |
 | **Backend API Endpoint** | `[READY FOR CLOUD PROVISIONING]` | Destination: `https://us-central1-clouder-513011.cloudfunctions.net/cloudport-register` |
