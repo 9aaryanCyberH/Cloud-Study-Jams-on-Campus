@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Google Cloud Study Jams 2026 organized by Google Developer Group at B. P. Poddar Institute of Management & Technology. Learn Google Cloud, build real skills, and grow together.">
+  <meta name="theme-color" content="#1a73e8">
+  <title>Google Cloud Study Jams 2026 | Google Developer Group BPPIMT</title>
+
+  <!-- Typography: Google Fonts (Inter & Outfit) + Material Symbols -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Google 4-Color Top Accent Bar -->
+  <div class="google-top-bar" aria-hidden="true"></div>
+
+  <!-- Header / Navigation Bar with Official GDG BPPIMT Logo on Top -->
+  <header class="navbar" id="top">
+    <div class="nav-container">
+      <a href="#top" class="nav-brand" aria-label="Google Developer Group BPPIMT Home">
+        <img src="assets/gdg-bppimt-logo.png" 
+             srcset="assets/gdg-bppimt-logo.png 1x, assets/gdg-bppimt-logo@2x.png 2x" 
+             alt="Google Developer Group — B. P. Poddar Institute of Management &amp; Technology" 
+             class="gdg-official-logo" 
+             width="264" 
+             height="35">
+      </a>
+
+      <!-- Mobile Menu Toggle Button -->
+      <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="navMenu">
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+      </button>
+
+      <nav class="nav-menu" id="navMenu" aria-label="Main Navigation">
+        <a href="#about" class="nav-link">About</a>
+        <a href="#journey" class="nav-link">Learning Journey</a>
+        <a href="#students" class="nav-link">For Students</a>
+        <a href="#mentors" class="nav-link">Become a Mentor</a>
+        <a href="#faq" class="nav-link">FAQ</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="#students" class="btn btn-primary btn-sm">Join Study Jams</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section (Clean Google Developer Aesthetic) -->
+    <section class="hero-section" id="hero">
+      <div class="container hero-container">
+        <div class="hero-content">
+          <div class="hero-eyebrow">
+            <span class="badge-dots" aria-hidden="true">
+              <span class="dot dot-blue"></span>
+              <span class="dot dot-red"></span>
+              <span class="dot dot-yellow"></span>
+              <span class="dot dot-green"></span>
+            </span>
+            <span>GOOGLE DEVELOPER GROUP &bull; BPPIMT</span>
+          </div>
+
+          <h1 class="hero-title">
+            Google Cloud <span class="highlight-blue">Study Jams</span> 2026
+          </h1>
+
+          <p class="hero-subtitle">
+            Learn Google Cloud. Build Real Skills. Grow Together.
+          </p>
+
+          <p class="hero-lead">
+            Join student developers to explore Google Cloud through guided learning pathways, practical lab activities, and peer collaboration at B. P. Poddar Institute of Management &amp; Technology.
+          </p>
+
+          <div class="hero-availability">
+            <span class="availability-pill">
+              <span class="pulse-dot" aria-hidden="true"></span>
+              Starting November 2026
+            </span>
+            <span class="location-pill">
+              <span class="location-pin" aria-hidden="true">&#128205;</span>
+              B. P. Poddar Institute of Management &amp; Technology, Kolkata
+            </span>
+          </div>
+
+          <div class="hero-actions">
+            <a href="#students" class="btn btn-primary btn-lg">
+              Register as a Student &rarr;
+            </a>
+            <a href="#mentors" class="btn btn-outline btn-lg">
+              Become a Mentor
+            </a>
+          </div>
+        </div>
+
+        <!-- Hero Graphic: GCP Cloud Tools & Serverless Architecture (Google Brand Colors Only) -->
+        <div class="hero-graphic" id="gcpGraphicContainer">
+          <div class="gcp-architecture-showcase" role="region" aria-label="Google Cloud Platform Serverless Architecture">
+            
+            <!-- Background Circuit SVG: Connecting GCP Services -->
+            <svg class="gcp-circuit-canvas" viewBox="0 0 540 420" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <!-- Ambient Concentric Orbit Rings (Google Developer Style) -->
+              <circle cx="270" cy="190" r="160" stroke="#E8EAED" stroke-width="1.5" stroke-dasharray="6 8" class="orbit-outer"/>
+              <circle cx="270" cy="190" r="105" stroke="#F1F3F4" stroke-width="1.2" stroke-dasharray="4 6" class="orbit-inner"/>
+
+              <!-- Flow Ray 1: Cloud Storage (Blue) -> Cloud Functions (Center) -->
+              <path id="rayStorage" d="M 115 78 Q 190 115 205 160" stroke="#C2E7FF" stroke-width="2.5" stroke-dasharray="4 4" class="gcp-ray ray-blue"/>
+              <circle r="4" fill="#1A73E8">
+                <animateMotion dur="2.8s" repeatCount="indefinite" path="M 115 78 Q 190 115 205 160"/>
+              </circle>
+
+              <!-- Flow Ray 2: Cloud Functions (Center) -> Cloud Firestore (Red/Yellow) -->
+              <path id="rayFunctions" d="M 425 78 Q 350 115 335 160" stroke="#FAD2CF" stroke-width="2.5" stroke-dasharray="4 4" class="gcp-ray ray-red"/>
+              <circle r="4" fill="#EA4335">
+                <animateMotion dur="3s" repeatCount="indefinite" path="M 425 78 Q 350 115 335 160"/>
+              </circle>
+
+              <!-- Flow Ray 3: Cloud Firestore (Yellow) -> Real-time DB -->
+              <path id="rayFirestore" d="M 115 325 Q 190 270 205 220" stroke="#FEF7E0" stroke-width="2.5" stroke-dasharray="4 4" class="gcp-ray ray-yellow"/>
+              <circle r="4" fill="#FBBC04">
+                <animateMotion dur="2.6s" repeatCount="indefinite" path="M 115 325 Q 190 270 205 220"/>
+              </circle>
+
+              <!-- Flow Ray 4: Pub/Sub & IAM Security (Green) -->
+              <path id="raySecurity" d="M 425 325 Q 350 270 335 220" stroke="#CEEAD6" stroke-width="2.5" stroke-dasharray="4 4" class="gcp-ray ray-green"/>
+              <circle r="4" fill="#34A853">
+                <animateMotion dur="3.2s" repeatCount="indefinite" path="M 425 325 Q 350 270 335 220"/>
+              </circle>
+            </svg>
+
+            <!-- Center Core Hub: Google Cloud Platform Serverless Architecture -->
+            <div class="gcp-center-hub" id="gcpCenterHub" tabindex="0" role="button" aria-label="Google Cloud Platform Serverless Hub">
+              <div class="gcp-top-accent"></div>
+              <div class="gcp-hub-emblem" aria-hidden="true">
+                <svg width="42" height="28" viewBox="0 0 48 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <!-- Google Cloud Silhouette -->
+                  <path d="M37.5 11C36.7 4.8 31.4 0 25 0C19.9 0 15.6 3 13.5 7.2C5.9 7.8 0 14.2 0 22C0 27.5 4.5 32 10 32H37C43.1 32 48 27.1 48 21C48 15.6 43.4 11.3 37.5 11Z" fill="#E8F0FE" stroke="#1A73E8" stroke-width="2.2" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="gcp-hub-title" id="gcpHubTitle">Google Cloud</div>
+              <div class="gcp-hub-subtitle" id="gcpHubSubtitle">Serverless Architecture</div>
+              <div class="gcp-hub-status" id="gcpHubStatus">
+                <span class="status-pulse-dot"></span>
+                <span id="gcpStatusText">Live Data Pipeline</span>
+              </div>
+            </div>
+
+            <!-- GCP Tool 1: Google Cloud Storage (Top-Left, Google Blue #4285F4) -->
+            <div class="gcp-service-card card-gcs" id="cardGcs" data-tool="gcs" tabindex="0" role="button" aria-label="Google Cloud Storage: Static Frontend Hosting">
+              <div class="gcp-service-icon bg-blue">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M4 6C4 4.89543 4.89543 4 6 4H18C19.1046 4 20 4.89543 20 6V9C20 10.1046 19.1046 11 18 11H6C4.89543 11 4 10.1046 4 9V6Z" stroke="#1A73E8" stroke-width="2" stroke-linejoin="round"/>
+                  <path d="M4 15C4 13.8954 4.89543 13 6 13H18C19.1046 13 20 13.8954 20 15V18C20 19.1046 19.1046 20 18 20H6C4.89543 20 4 19.1046 4 18V15Z" stroke="#1A73E8" stroke-width="2" stroke-linejoin="round"/>
+                  <circle cx="8" cy="7.5" r="1" fill="#1A73E8"/>
+                  <circle cx="8" cy="16.5" r="1" fill="#1A73E8"/>
+                </svg>
+              </div>
+              <div class="gcp-service-content">
+                <span class="gcp-service-name">Cloud Storage</span>
+                <span class="gcp-service-desc">Static Web Hosting</span>
+                <span class="gcp-service-tag tag-blue">GCS Bucket</span>
+              </div>
+            </div>
+
+            <!-- GCP Tool 2: Google Cloud Functions (Top-Right, Google Red #EA4335) -->
+            <div class="gcp-service-card card-functions" id="cardFunctions" data-tool="functions" tabindex="0" role="button" aria-label="Google Cloud Functions: Serverless Python API">
+              <div class="gcp-service-icon bg-red">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" stroke="#EA4335" stroke-width="2" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="gcp-service-content">
+                <span class="gcp-service-name">Cloud Functions</span>
+                <span class="gcp-service-desc">Serverless Python API</span>
+                <span class="gcp-service-tag tag-red">POST Trigger</span>
+              </div>
+            </div>
+
+            <!-- GCP Tool 3: Google Cloud Firestore (Bottom-Left, Google Yellow #FBBC04) -->
+            <div class="gcp-service-card card-firestore" id="cardFirestore" data-tool="firestore" tabindex="0" role="button" aria-label="Google Cloud Firestore: Managed NoSQL Database">
+              <div class="gcp-service-icon bg-yellow">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <ellipse cx="12" cy="6" rx="8" ry="3" stroke="#B06000" stroke-width="2"/>
+                  <path d="M4 6V12C4 13.6569 7.58172 15 12 15C16.4183 15 20 13.6569 20 12V6" stroke="#B06000" stroke-width="2"/>
+                  <path d="M4 12V18C4 19.6569 7.58172 21 12 21C16.4183 21 20 19.6569 20 18V12" stroke="#B06000" stroke-width="2"/>
+                </svg>
+              </div>
+              <div class="gcp-service-content">
+                <span class="gcp-service-name">Cloud Firestore</span>
+                <span class="gcp-service-desc">Native NoSQL Database</span>
+                <span class="gcp-service-tag tag-yellow">registrations</span>
+              </div>
+            </div>
+
+            <!-- GCP Tool 4: Cloud Pub/Sub & IAM (Bottom-Right, Google Green #34A853) -->
+            <div class="gcp-service-card card-security" id="cardSecurity" data-tool="security" tabindex="0" role="button" aria-label="Pub/Sub and Cloud IAM: Security & Decoupled Pipeline">
+              <div class="gcp-service-icon bg-green">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2L4 5V11C4 16.5 7.4 21.6 12 23C16.6 21.6 20 16.5 20 11V5L12 2Z" stroke="#137333" stroke-width="2" stroke-linejoin="round"/>
+                  <path d="M9 12L11 14L15 9" stroke="#137333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="gcp-service-content">
+                <span class="gcp-service-name">Pub/Sub &amp; IAM</span>
+                <span class="gcp-service-desc">Security &amp; Events</span>
+                <span class="gcp-service-tag tag-green">Least Privilege</span>
+              </div>
+            </div>
+
+            <!-- Symmetrical Bottom Status Pill -->
+            <div class="gcp-floating-pill" aria-hidden="true">
+              <span class="pill-dot-green"></span>
+              <span>GDG BPPIMT &bull; GCP Serverless Architecture</span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section: Program Overview -->
+    <section class="section section-tinted" id="about">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">About The Program</span>
+          <h2 class="section-title">Empowering Student Developers with Google Cloud</h2>
+          <p class="section-subtitle">
+            Google Cloud Study Jams 2026 is an inclusive, student-first learning initiative organized by Google Developer Group at B. P. Poddar Institute of Management &amp; Technology (BPPIMT). Designed to bridge academic study with real-world cloud engineering, the program offers a structured, supportive environment for learners at every stage.
+          </p>
+        </div>
+
+        <div class="grid grid-4">
+          <!-- Pillar 1: Guided Learning (Google Blue) -->
+          <div class="card pillar-card pillar-blue">
+            <div class="pillar-header">
+              <div class="pillar-icon-box bg-blue" aria-hidden="true">
+                <span class="material-symbols-outlined">menu_book</span>
+              </div>
+              <span class="pillar-badge badge-blue">Pathways</span>
+            </div>
+            <h3 class="pillar-title">Guided Learning</h3>
+            <p class="pillar-text">
+              Follow curated curriculum roadmaps covering Google Cloud compute engines, networking fundamentals, and serverless architectures.
+            </p>
+          </div>
+
+          <!-- Pillar 2: Hands-On Practice (Google Yellow) -->
+          <div class="card pillar-card pillar-yellow">
+            <div class="pillar-header">
+              <div class="pillar-icon-box bg-yellow" aria-hidden="true">
+                <span class="material-symbols-outlined">terminal</span>
+              </div>
+              <span class="pillar-badge badge-yellow">Practical</span>
+            </div>
+            <h3 class="pillar-title">Hands-On Practice</h3>
+            <p class="pillar-text">
+              Move beyond passive video lectures. Deploy real cloud functions, manage NoSQL databases, and configure object storage through practical exercises.
+            </p>
+          </div>
+
+          <!-- Pillar 3: Campus Peer Circles (Google Green) -->
+          <div class="card pillar-card pillar-green">
+            <div class="pillar-header">
+              <div class="pillar-icon-box bg-green" aria-hidden="true">
+                <span class="material-symbols-outlined">groups</span>
+              </div>
+              <span class="pillar-badge badge-green">Community</span>
+            </div>
+            <h3 class="pillar-title">Campus Peer Circles</h3>
+            <p class="pillar-text">
+              Study alongside fellow BPPIMT students, share breakthroughs, troubleshoot bugs together, and learn with mentor support.
+            </p>
+          </div>
+
+          <!-- Pillar 4: Foundational Architecture (Google Red) -->
+          <div class="card pillar-card pillar-red">
+            <div class="pillar-header">
+              <div class="pillar-icon-box bg-red" aria-hidden="true">
+                <span class="material-symbols-outlined">rocket_launch</span>
+              </div>
+              <span class="pillar-badge badge-red">Growth</span>
+            </div>
+            <h3 class="pillar-title">Foundational Skills</h3>
+            <p class="pillar-text">
+              Build core cloud fluency, security awareness, and developer confidence that prepare you for future academic projects and software engineering careers.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Learning Journey Section: Progressive Stages -->
+    <section class="section" id="journey">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Program Roadmap</span>
+          <h2 class="section-title">Your Learning Journey</h2>
+          <p class="section-subtitle">
+            A progressive, four-stage pathway designed to guide students from initial concepts to confident cloud experimentation.
+          </p>
+        </div>
+
+        <div class="journey-grid">
+          <!-- Stage 1 -->
+          <div class="journey-card">
+            <div class="journey-number">01</div>
+            <div class="journey-content">
+              <span class="journey-tag tag-blue">Step 1</span>
+              <h3 class="journey-title">Get Started</h3>
+              <p class="journey-desc">
+                Understand cloud computing fundamentals, global infrastructure, IAM access controls, and how to navigate the Google Cloud Console.
+              </p>
+            </div>
+          </div>
+
+          <!-- Stage 2 -->
+          <div class="journey-card">
+            <div class="journey-number">02</div>
+            <div class="journey-content">
+              <span class="journey-tag tag-red">Step 2</span>
+              <h3 class="journey-title">Learn by Doing</h3>
+              <p class="journey-desc">
+                Explore guided learning resources, deploy lightweight HTTP Cloud Functions, and manage unstructured static assets on Cloud Storage.
+              </p>
+            </div>
+          </div>
+
+          <!-- Stage 3 -->
+          <div class="journey-card">
+            <div class="journey-number">03</div>
+            <div class="journey-content">
+              <span class="journey-tag tag-yellow">Step 3</span>
+              <h3 class="journey-title">Build &amp; Experiment</h3>
+              <p class="journey-desc">
+                Apply concepts through hands-on activities: wire event-driven triggers, manage persistent Firestore documents, and test schema validation.
+              </p>
+            </div>
+          </div>
+
+          <!-- Stage 4 -->
+          <div class="journey-card">
+            <div class="journey-number">04</div>
+            <div class="journey-content">
+              <span class="journey-tag tag-green">Step 4</span>
+              <h3 class="journey-title">Learn Together</h3>
+              <p class="journey-desc">
+                Collaborate in peer study circles, participate in mentor Q&amp;A sessions, review code with classmates, and share your project outcomes.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Student Registration Section -->
+    <section class="section section-tinted" id="students">
+      <div class="container">
+        <div class="form-section-wrapper">
+          <div class="form-info-col">
+            <span class="section-tag">Student Participants</span>
+            <h2 class="section-title">Start Your Google Cloud Journey</h2>
+            <p class="form-info-desc">
+              Whether you are completely new to cloud computing or looking to deepen your development skills, Google Cloud Study Jams 2026 welcomes you.
+            </p>
+
+            <div class="feature-bullets">
+              <div class="bullet-item">
+                <span class="bullet-icon bullet-blue" aria-hidden="true">&#10003;</span>
+                <div>
+                  <strong>Zero Prior Cloud Required</strong>
+                  <span>We start from ground zero and build step-by-step.</span>
+                </div>
+              </div>
+              <div class="bullet-item">
+                <span class="bullet-icon bullet-green" aria-hidden="true">&#10003;</span>
+                <div>
+                  <strong>Peer Study Circles</strong>
+                  <span>Learn with fellow students from BPPIMT departments.</span>
+                </div>
+              </div>
+              <div class="bullet-item">
+                <span class="bullet-icon bullet-yellow" aria-hidden="true">&#10003;</span>
+                <div>
+                  <strong>Guided Labs &amp; Exercises</strong>
+                  <span>Gain practical experience with Google Cloud tools.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="info-callout">
+              <p><strong>Note:</strong> Program schedule, platform links, and study circle assignments will be shared directly to your registered email address ahead of November 2026.</p>
+            </div>
+          </div>
+
+          <!-- Student Registration Card -->
+          <div class="form-card">
+            <div class="card-stripe" aria-hidden="true"></div>
+            <h3 class="card-form-title">Student Registration</h3>
+            <p class="card-form-sub">Please fill in your details accurately.</p>
+
+            <!-- Student Error Alert Banner -->
+            <div class="alert alert-danger" id="studentFormError" role="alert" style="display: none;">
+              <div class="alert-icon">&#10007;</div>
+              <div class="alert-content">
+                <strong id="studentErrorTitle">Registration Failed</strong>
+                <p id="studentErrorMessage">Please review the highlighted fields and try again.</p>
+              </div>
+            </div>
+
+            <form id="studentRegistrationForm" novalidate autocomplete="on">
+              <!-- Full Name Field -->
+              <div class="form-group" id="groupStudentName">
+                <label for="studentName" class="form-label">
+                  Full Name <span class="required" aria-hidden="true">*</span>
+                </label>
+                <div class="input-wrapper">
+                  <input
+                    type="text"
+                    id="studentName"
+                    name="name"
+                    class="form-input"
+                    placeholder="e.g. Aaryan Kumar"
+                    required
+                    minlength="2"
+                    maxlength="100"
+                    autocomplete="name"
+                    aria-describedby="studentNameError"
+                  >
+                </div>
+                <div class="field-error" id="studentNameError" aria-live="polite"></div>
+              </div>
+
+              <!-- Email Field -->
+              <div class="form-group" id="groupStudentEmail">
+                <label for="studentEmail" class="form-label">
+                  College or Personal Email <span class="required" aria-hidden="true">*</span>
+                </label>
+                <div class="input-wrapper">
+                  <input
+                    type="email"
+                    id="studentEmail"
+                    name="email"
+                    class="form-input"
+                    placeholder="e.g. aaryan.kumar@bppimt.edu.in"
+                    required
+                    maxlength="254"
+                    autocomplete="email"
+                    aria-describedby="studentEmailError"
+                  >
+                </div>
+                <div class="field-error" id="studentEmailError" aria-live="polite"></div>
+              </div>
+
+              <!-- Department Select -->
+              <div class="form-group" id="groupStudentDepartment">
+                <label for="studentDepartment" class="form-label">
+                  College / Department <span class="required" aria-hidden="true">*</span>
+                </label>
+                <div class="select-wrapper">
+                  <select
+                    id="studentDepartment"
+                    name="department"
+                    class="form-select"
+                    required
+                    aria-describedby="studentDepartmentError"
+                  >
+                    <option value="" disabled selected>Select your department</option>
+                    <option value="CSE">Computer Science &amp; Engineering (CSE)</option>
+                    <option value="IT">Information Technology (IT)</option>
+                    <option value="ECE">Electronics &amp; Communication (ECE)</option>
+                    <option value="EE">Electrical Engineering (EE)</option>
+                    <option value="ME">Mechanical Engineering (ME)</option>
+                    <option value="CE">Civil Engineering (CE)</option>
+                    <option value="BCA">Bachelor of Computer Applications (BCA)</option>
+                    <option value="MCA">Master of Computer Applications (MCA)</option>
+                    <option value="MBA">Master of Business Administration (MBA)</option>
+                    <option value="Other">Other Academic Discipline</option>
+                  </select>
+                </div>
+                <div class="field-error" id="studentDepartmentError" aria-live="polite"></div>
+              </div>
+
+              <!-- Year of Study Select -->
+              <div class="form-group" id="groupStudentYear">
+                <label for="studentYear" class="form-label">
+                  Year of Study <span class="required" aria-hidden="true">*</span>
+                </label>
+                <div class="select-wrapper">
+                  <select
+                    id="studentYear"
+                    name="yearOfStudy"
+                    class="form-select"
+                    required
+                    aria-describedby="studentYearError"
+                  >
+                    <option value="" disabled selected>Select your current academic year</option>
+                    <option value="1st Year">1st Year (Freshman)</option>
+                    <option value="2nd Year">2nd Year (Sophomore)</option>
+                    <option value="3rd Year">3rd Year (Junior)</option>
+                    <option value="4th Year">4th Year (Senior)</option>
+                    <option value="Postgraduate">Postgraduate / Masters</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <div class="field-error" id="studentYearError" aria-live="polite"></div>
+              </div>
+
+              <!-- Area of Interest Select -->
+              <div class="form-group" id="groupStudentInterest">
+                <label for="studentInterest" class="form-label">
+                  Area of Interest <span class="required" aria-hidden="true">*</span>
+                </label>
+                <div class="select-wrapper">
+                  <select
+                    id="studentInterest"
+                    name="interest"
+                    class="form-select"
+                    required
+                    aria-describedby="studentInterestError"
+                  >
+                    <option value="" disabled selected>Select your primary learning interest</option>
+                    <option value="Cloud Infrastructure">Cloud Infrastructure &amp; Core Services</option>
+                    <option value="Serverless">Serverless Architecture &amp; Functions</option>
+                    <option value="DevOps">DevOps &amp; Continuous Deployment</option>
+                    <option value="Web Development">Cloud Web Development</option>
+                    <option value="Mobile Development">Mobile Backend &amp; Firebase</option>
+                    <option value="Cybersecurity">Cloud Security &amp; IAM Governance</option>
+                    <option value="Data & Storage">Data Modeling &amp; Cloud Storage</option>
+                    <option value="Cloud Fundamentals">Cloud Fundamentals &amp; Foundations</option>
+                  </select>
+                </div>
+                <div class="field-error" id="studentInterestError" aria-live="polite"></div>
+              </div>
+
+              <!-- Anti-Spam Honeypot Field -->
+              <div class="honeypot-field" aria-hidden="true">
+                <label for="studentWebsite">Leave this field blank</label>
+                <input type="text" id="studentWebsite" name="website" tabindex="-1" autocomplete="off">
+              </div>
+
+              <!-- Submit Button -->
+              <button type="submit" class="btn btn-primary btn-block btn-submit" id="studentSubmitBtn">
+                <span class="btn-spinner" id="studentSpinner" aria-hidden="true" style="display: none;"></span>
+                <span id="studentBtnText">Register as a Student &rarr;</span>
+              </button>
+
+              <p class="form-disclaimer">
+                By registering, you agree to receive Study Jams updates from Google Developer Group BPPIMT. Submissions are securely processed via serverless Google Cloud Functions.
+              </p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mentor Registration Section -->
+    <section class="section" id="mentors">
+      <div class="container">
+        <div class="form-section-wrapper">
+          <div class="form-info-col">
+            <span class="section-tag">Community Mentors</span>
+            <h2 class="section-title">Share What You Know. Help Someone Grow.</h2>
+            <p class="form-info-desc">
+              Mentors play an essential role in Study Jams by supporting fellow students, facilitating study groups, and helping learners navigate technical roadblocks.
+            </p>
+
+            <div class="feature-bullets">
+              <div class="bullet-item">
+                <span class="bullet-icon bullet-blue" aria-hidden="true">&#9733;</span>
+                <div>
+                  <strong>Guide Student Learners</strong>
+                  <span>Help peers overcome initial setup and conceptual hurdles.</span>
+                </div>
+              </div>
+              <div class="bullet-item">
+                <span class="bullet-icon bullet-yellow" aria-hidden="true">&#9733;</span>
+                <div>
+                  <strong>Share Technical Experience</strong>
+                  <span>Offer real-world debugging tips and best practices.</span>
+                </div>
+              </div>
+              <div class="bullet-item">
+                <span class="bullet-icon bullet-green" aria-hidden="true">&#9733;</span>
+                <div>
+                  <strong>Strengthen Campus Community</strong>
+                  <span>Foster a collaborative, encouraging campus developer culture.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="info-callout">
+              <p><strong>Note:</strong> Mentor applications are reviewed by the Google Developer Group BPPIMT organizing team based on cohort size and area coverage. Registration indicates interest and does not guarantee selection.</p>
+            </div>
+          </div>
+
+          <!-- Mentor Registration Card -->
+          <div class="form-card">
+            <div class="card-stripe card-stripe-mentor" aria-hidden="true"></div>
+            <h3 class="card-form-title">Become a Mentor</h3>
+            <p class="card-form-sub">Volunteer to mentor during Study Jams 2026.</p>
+
+            <!-- Mentor Error Alert Banner -->
+            <div class="alert alert-danger" id="mentorFormError" role="alert" style="display: none;">
+              <div class="alert-icon">&#10007;</div>
+              <div class="alert-content">
+                <strong id="mentorErrorTitle">Application Failed</strong>
+                <p id="mentorErrorMessage">Please review the highlighted fields and try again.</p>
+              </div>
+            </div>
+
+            <form id="mentorRegistrationForm" novalidate autocomplete="on">
+              <!-- Full Name Field -->
+              <div class="form-group" id="groupMentorName">
+                <label for="mentorName" class="form-label">
+                  Full Name <span class="required" aria-hidden="true">*</span>
+                </label>
+                <div class="input-wrapper">
+                  <input
+                    type="text"
+                    id="mentorName"
+                    name="name"
+                    class="form-input"
+                    placeholder="e.g. Aaryan Kumar"
+                    required
+                    minlength="2"
+                    maxlength="100"
+                    autocomplete="name"
+                    aria-describedby="mentorNameError"
+                  >
+                </div>
+                <div class="field-error" id="mentorNameError" aria-live="polite"></div>
+              </div>
+
+              <!-- Email Field -->
+              <div class="form-group" id="groupMentorEmail">
+                <label for="mentorEmail" class="form-label">
+                  Email Address <span class="required" aria-hidden="true">*</span>
+                </label>
+                <div class="input-wrapper">
+                  <input
+                    type="email"
+                    id="mentorEmail"
+                    name="email"
+                    class="form-input"
+                    placeholder="e.g. aaryan.mentor@bppimt.edu.in"
+                    required
+                    maxlength="254"
+                    autocomplete="email"
+                    aria-describedby="mentorEmailError"
+                  >
+                </div>
+                <div class="field-error" id="mentorEmailError" aria-live="polite"></div>
+              </div>
+
+              <!-- Current Role or Year -->
+              <div class="form-group" id="groupMentorRole">
+                <label for="mentorRole" class="form-label">
+                  Current Role / Year of Study <span class="required" aria-hidden="true">*</span>
+                </label>
+                <div class="input-wrapper">
+                  <input
+                    type="text"
+                    id="mentorRole"
+                    name="currentRole"
+                    class="form-input"
+                    placeholder="e.g. 4th Year CSE / Alumni / Software Developer"
+                    required
+                    minlength="2"
+                    maxlength="100"
+                    aria-describedby="mentorRoleError"
+                  >
+                </div>
+                <div class="field-error" id="mentorRoleError" aria-live="polite"></div>
+              </div>
+
+              <!-- Relevant Skills -->
+              <div class="form-group" id="groupMentorSkills">
+                <label for="mentorSkills" class="form-label">
+                  Relevant Cloud or Technical Skills <span class="required" aria-hidden="true">*</span>
+                </label>
+                <div class="input-wrapper">
+                  <input
+                    type="text"
+                    id="mentorSkills"
+                    name="skills"
+                    class="form-input"
+                    placeholder="e.g. Google Cloud, Python, Terraform, Docker, Web Development"
+                    required
+                    minlength="2"
+                    maxlength="250"
+                    aria-describedby="mentorSkillsError"
+                  >
+                </div>
+                <div class="field-error" id="mentorSkillsError" aria-live="polite"></div>
+              </div>
+
+              <!-- Areas They Can Mentor -->
+              <div class="form-group" id="groupMentorAreas">
+                <label for="mentorAreas" class="form-label">
+                  Areas You Can Mentor <span class="required" aria-hidden="true">*</span>
+                </label>
+                <div class="input-wrapper">
+                  <input
+                    type="text"
+                    id="mentorAreas"
+                    name="mentorAreas"
+                    class="form-input"
+                    placeholder="e.g. Cloud Fundamentals, Serverless Microservices, IAM Security"
+                    required
+                    minlength="2"
+                    maxlength="250"
+                    aria-describedby="mentorAreasError"
+                  >
+                </div>
+                <div class="field-error" id="mentorAreasError" aria-live="polite"></div>
+              </div>
+
+              <!-- Motivation Statement -->
+              <div class="form-group" id="groupMentorMotivation">
+                <label for="mentorMotivation" class="form-label">
+                  Why do you want to mentor? <span class="required" aria-hidden="true">*</span>
+                </label>
+                <div class="input-wrapper">
+                  <textarea
+                    id="mentorMotivation"
+                    name="motivation"
+                    class="form-textarea"
+                    rows="3"
+                    placeholder="Briefly describe your experience and motivation to support student learners (minimum 10 characters)."
+                    required
+                    minlength="10"
+                    maxlength="1000"
+                    aria-describedby="mentorMotivationError"
+                  ></textarea>
+                </div>
+                <div class="field-error" id="mentorMotivationError" aria-live="polite"></div>
+              </div>
+
+              <!-- Anti-Spam Honeypot Field -->
+              <div class="honeypot-field" aria-hidden="true">
+                <label for="mentorWebsite">Leave this field blank</label>
+                <input type="text" id="mentorWebsite" name="website" tabindex="-1" autocomplete="off">
+              </div>
+
+              <!-- Submit Button -->
+              <button type="submit" class="btn btn-primary btn-block btn-submit" id="mentorSubmitBtn">
+                <span class="btn-spinner" id="mentorSpinner" aria-hidden="true" style="display: none;"></span>
+                <span id="mentorBtnText">Submit Mentor Application &rarr;</span>
+              </button>
+
+              <p class="form-disclaimer">
+                Applications are reviewed on a rolling basis. The organizing team will reach out with onboarding information if selected.
+              </p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Community & FAQ Section -->
+    <section class="section section-tinted" id="faq">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Community &amp; Inquiries</span>
+          <h2 class="section-title">Frequently Asked Questions</h2>
+          <p class="section-subtitle">
+            Find answers to common questions regarding participation, prerequisites, and program flow.
+          </p>
+        </div>
+
+        <div class="faq-accordion">
+          <details class="faq-item">
+            <summary class="faq-question">Who can participate?</summary>
+            <div class="faq-answer">
+              <p>Google Cloud Study Jams 2026 is open to all students across all engineering and management departments at B. P. Poddar Institute of Management &amp; Technology (BPPIMT), regardless of academic year.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">Do I need prior Google Cloud experience?</summary>
+            <div class="faq-answer">
+              <p>No prior cloud or Google Cloud experience is necessary. The program is specifically structured to introduce cloud fundamentals from the beginning before progressing to hands-on exercises.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">How does registration work?</summary>
+            <div class="faq-answer">
+              <p>Fill out the student registration form on this page. Your registration is validated and recorded securely by our serverless Google Cloud backend. Study schedule announcements will be shared with registered students via email.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">How can I volunteer as a mentor?</summary>
+            <div class="faq-answer">
+              <p>If you have experience with Google Cloud, software development, or cloud architecture, you can submit the "Become a Mentor" form above. The Google Developer Group team will review applications and coordinate mentor orientation.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">When does the program begin?</summary>
+            <div class="faq-answer">
+              <p>The Study Jams program is slated to start in November 2026 and continue through the designated study schedule. Confirmed dates and meeting times will be communicated to registered participants.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Student Confirmation Modal -->
+  <div class="modal-backdrop" id="studentSuccessModal" role="dialog" aria-modal="true" aria-labelledby="studentSuccessTitle" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="success-badge-circle" aria-hidden="true">&#10003;</div>
+        <h3 class="modal-title" id="studentSuccessTitle">Registration Confirmed</h3>
+        <p class="modal-sub">Welcome to Google Cloud Study Jams 2026!</p>
+      </div>
+
+      <div class="modal-body">
+        <div class="ticket-card">
+          <div class="ticket-header">
+            <span>Google Developer Group BPPIMT &bull; Study Jams</span>
+            <span class="ticket-status">CONFIRMED</span>
+          </div>
+
+          <div class="ticket-details">
+            <div class="ticket-row">
+              <span class="ticket-label">Participant Name</span>
+              <strong class="ticket-val" id="confirmedStudentName">&ndash;</strong>
+            </div>
+            <div class="ticket-row">
+              <span class="ticket-label">Email Address</span>
+              <strong class="ticket-val" id="confirmedStudentEmail">&ndash;</strong>
+            </div>
+            <div class="ticket-row">
+              <span class="ticket-label">Track / Interest</span>
+              <strong class="ticket-val" id="confirmedStudentInterest">&ndash;</strong>
+            </div>
+            <div class="ticket-row">
+              <span class="ticket-label">Registration ID</span>
+              <div class="id-copy-group">
+                <code class="ticket-id" id="confirmedStudentId">&ndash;</code>
+                <button type="button" class="btn-copy" id="copyStudentIdBtn" title="Copy Registration ID">
+                  Copy
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p class="modal-note">
+          Your registration record has been securely recorded. Look out for updates and cohort assignments in your email inbox.
+        </p>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary btn-block" id="closeStudentSuccessBtn">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mentor Confirmation Modal -->
+  <div class="modal-backdrop" id="mentorSuccessModal" role="dialog" aria-modal="true" aria-labelledby="mentorSuccessTitle" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="success-badge-circle badge-circle-mentor" aria-hidden="true">&#9733;</div>
+        <h3 class="modal-title" id="mentorSuccessTitle">Application Received</h3>
+        <p class="modal-sub">Thank you for volunteering to mentor!</p>
+      </div>
+
+      <div class="modal-body">
+        <div class="ticket-card">
+          <div class="ticket-header">
+            <span>Google Developer Group BPPIMT &bull; Mentor Circle</span>
+            <span class="ticket-status status-mentor">RECEIVED</span>
+          </div>
+
+          <div class="ticket-details">
+            <div class="ticket-row">
+              <span class="ticket-label">Applicant Name</span>
+              <strong class="ticket-val" id="confirmedMentorName">&ndash;</strong>
+            </div>
+            <div class="ticket-row">
+              <span class="ticket-label">Email Address</span>
+              <strong class="ticket-val" id="confirmedMentorEmail">&ndash;</strong>
+            </div>
+            <div class="ticket-row">
+              <span class="ticket-label">Application ID</span>
+              <div class="id-copy-group">
+                <code class="ticket-id" id="confirmedMentorId">&ndash;</code>
+                <button type="button" class="btn-copy" id="copyMentorIdBtn" title="Copy Application ID">
+                  Copy
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p class="modal-note">
+          Your mentor volunteer application has been submitted to the organizing team. We will review applications and reach out with further details.
+        </p>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary btn-block" id="closeMentorSuccessBtn">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <!-- Footer with Official GDG BPPIMT Branding -->
+  <footer class="footer">
+    <div class="container footer-container">
+      <div class="footer-left">
+        <img src="assets/gdg-bppimt-logo.png" 
+             srcset="assets/gdg-bppimt-logo.png 1x, assets/gdg-bppimt-logo@2x.png 2x" 
+             alt="Google Developer Group — B. P. Poddar Institute of Management &amp; Technology" 
+             class="gdg-official-logo footer-logo" 
+             width="264" 
+             height="35">
+        <p class="footer-sub">Google Developer Group &bull; B. P. Poddar Institute of Management &amp; Technology. Engineered by <a href="https://www.linkedin.com/in/aaryan-k-ba3985246/" target="_blank" rel="noopener noreferrer" class="creator-linkedin" title="Connect with Aaryan Kumar on LinkedIn"><strong>Aaryan Kumar</strong></a>.</p>
+      </div>
+
+      <div class="footer-nav">
+        <a href="#about" class="footer-link">About</a>
+        <a href="#journey" class="footer-link">Learning Journey</a>
+        <a href="#students" class="footer-link">For Students</a>
+        <a href="#mentors" class="footer-link">Become a Mentor</a>
+        <a href="#faq" class="footer-link">FAQ</a>
+      </div>
+
+      <div class="footer-right">
+        <a href="#top" id="backToTopBtn" class="footer-link" aria-label="Scroll back to top">Back to Top &uarr;</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Runtime Configuration & Main Scripts -->
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
